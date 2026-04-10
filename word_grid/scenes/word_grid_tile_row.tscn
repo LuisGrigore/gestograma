@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://brt4wkfjp534f"]
+
+[ext_resource type="Script" uid="uid://bvyg1ci1mhnq2" path="res://word_grid/scripts/word_grid_tile_row/word_grid_tile_row.gd" id="1_jd6iw"]
+
+[node name="TileRow" type="GridContainer" unique_id=158649297]
+columns = 5
+script = ExtResource("1_jd6iw")

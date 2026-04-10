@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://h0qu7sbe8n4l"]
+
+[ext_resource type="PackedScene" uid="uid://bjvqkblg7vtxo" path="res://word_grid/scenes/word_grid_panel.tscn" id="1_7tke1"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rxrf0"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a202f"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_rxrf0")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_noarx"]
+
+[node name="WordGridPlane" type="MeshInstance3D" unique_id=2009564734]
+transform = Transform3D(0.18518355, 0, 0, 0, -4.3711385e-08, -0.18557072, 0, 0.99999994, -8.111554e-09, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_a202f")
+mesh = SubResource("PlaneMesh_noarx")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1041448938]
+transparent_bg = true
+
+[node name="WordGridPanel" parent="SubViewport" unique_id=134962287 instance=ExtResource("1_7tke1")]
+max_tries = 5
+target_word = "Holaa"

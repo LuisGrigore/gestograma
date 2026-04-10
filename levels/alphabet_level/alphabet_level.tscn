@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bvy4se42ejj8e"]
+
+[ext_resource type="Script" uid="uid://b5rnme5m04g1s" path="res://levels/alphabet_level/alphabet_level.gd" id="1_njr36"]
+[ext_resource type="PackedScene" uid="uid://h0qu7sbe8n4l" path="res://word_grid/scenes/word_grid.tscn" id="2_0o1s7"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_njr36"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0o1s7"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_njr36")
+
+[node name="Level1" type="Node3D" unique_id=1317034863]
+script = ExtResource("1_njr36")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=860533745]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1826333294]
+visible = false
+
+[node name="WordGridPlane" parent="." unique_id=2009564734 instance=ExtResource("2_0o1s7")]
+transform = Transform3D(0.18518355, 0, 0, 0, -4.3711385e-08, -0.18557072, 0, 0.99999994, -8.111554e-09, 0, 0, -0.38104093)
+material_override = SubResource("StandardMaterial3D_0o1s7")

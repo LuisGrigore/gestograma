@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://hitecpmmu241"]
+
+[ext_resource type="StyleBox" uid="uid://5425pjaibxcf" path="res://resources/styles/word_grid/word_grid_tile_active_style.tres" id="1_vuh3q"]
+[ext_resource type="Script" uid="uid://b11xls4usjyuw" path="res://word_grid/scripts/word_grid_tile/word_grid_tile.gd" id="2_vu476"]
+
+[node name="Tile" type="Panel" unique_id=1641759670]
+custom_minimum_size = Vector2(64, 64)
+theme_override_styles/panel = ExtResource("1_vuh3q")
+script = ExtResource("2_vu476")
+
+[node name="Letter" type="Label" parent="." unique_id=1707585328]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1
