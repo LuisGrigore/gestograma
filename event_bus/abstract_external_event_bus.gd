@@ -3,7 +3,7 @@ class_name AbstractExternalEventBus
 
 signal event_received(event_type: String, payload)
 
-var _event_handlers := {} 
+var _event_handlers := {}
 
 func _ready():
 	pass

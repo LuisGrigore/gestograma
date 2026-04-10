@@ -11,7 +11,7 @@ func _on_start_game():
 	_scene_manager.set_world_3d_node(AlphabetLevel.init())
 
 func _on_scene_manager_ready() -> void:
-	var menu:MainMenu = MainMenu.init()
+	var menu: MainMenu = MainMenu.init()
 	_scene_manager.set_ui_node(menu)
 	menu.start_game.connect(_on_start_game)
 

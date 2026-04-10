@@ -1,35 +1,20 @@
 extends GridContainer
 class_name TileRow
 
+const TILE_ROW_SCENE := preload("res://word_grid/scenes/word_grid_tile_row.tscn")
+
 @export var target_word := ""
 
-var TileScene := preload("res://word_grid/scenes/word_grid_tile.tscn")
-
-var tiles:Array[Tile] = []
+var tiles: Array[Tile] = []
 var active_tile := 0
 
 var state_machine: StateMachine
 
-signal accepted(success:bool)
-
-#func delete_letter() -> void:
-	#if tiles[active_tile].get_letter() == "":
-		#if active_tile > 0:
-			#move_focus(FocusMovement.BACKWARD)
-	#
-	#tiles[active_tile].clear_content()
-
-
-	
-func activate() -> void:
-	state_machine.change_states("TileRowSelectingState", {"tiles": tiles, "index": 0})
-
-func _on_validation(success:bool) -> void:
-	accepted.emit(success)
+signal accepted(success: bool)
 
 func _ready() -> void:
 	for i in range(target_word.length()):
-		var tile = TileScene.instantiate()
+		var tile = Tile.init()
 		add_child(tile)
 		tiles.append(tile)
 		
@@ -45,5 +30,12 @@ func _ready() -> void:
 	
 	add_child(state_machine)
 
+static func init() -> TileRow:
+	var tile_row = TILE_ROW_SCENE.instantiate()
+	return tile_row
 
-	
+func _on_validation(success: bool) -> void:
+	accepted.emit(success)
+
+func activate() -> void:
+	state_machine.change_states("TileRowSelectingState", {"tiles": tiles, "index": 0})

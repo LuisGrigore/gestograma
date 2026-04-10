@@ -19,6 +19,6 @@ func on_exit() -> void:
 	_tiles[_current_index].set_state(Tile.States.LOCKED)
 	GameController.input_bus.letter.disconnect(_on_letter)
 
-func _on_letter(letter:String) -> void:
+func _on_letter(letter: String) -> void:
 	_tiles[_current_index].set_letter(letter)
-	change_state_request.emit("TileRowSelectingState", {"tiles":_tiles, "index":_current_index + 1})
+	change_state_request.emit("TileRowSelectingState", {"tiles": _tiles, "index": _current_index + 1})

@@ -2,7 +2,7 @@ extends State
 class_name TileRowLockState
 
 @export var target_word := ""
-signal validation(success:bool)
+signal validation(success: bool)
 
 static func get_instance(target_word: String) -> TileRowLockState:
 	var new_state = TileRowLockState.new()
@@ -10,7 +10,7 @@ static func get_instance(target_word: String) -> TileRowLockState:
 	new_state.target_word = target_word
 	return new_state
 
-func _validate(tiles:Array[Tile]) -> bool:
+func _validate(tiles: Array[Tile]) -> bool:
 	var is_valid = true
 	var remaining_letters: Array = target_word.split("")
 	
@@ -37,5 +37,5 @@ func _validate(tiles:Array[Tile]) -> bool:
 	return is_valid
 
 func on_enter(context := {}) -> void:
-	var tiles:Array[Tile] = context["tiles"]
+	var tiles: Array[Tile] = context["tiles"]
 	validation.emit(_validate(tiles))

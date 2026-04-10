@@ -1,6 +1,8 @@
 extends Panel
 class_name Tile
 
+const TILE_SCENE := preload("res://word_grid/scenes/word_grid_tile.tscn")
+
 @onready var letter_label: Label = $Letter
 
 var locked_style = preload("res://resources/styles/word_grid/word_grid_tile_locked_style.tres")
@@ -9,10 +11,15 @@ var active_style = preload("res://resources/styles/word_grid/word_grid_tile_acti
 var letter_hit_style = preload("res://resources/styles/word_grid/word_grid_tile_letter_hit_style.tres")
 var letter_conteined_style = preload("res://resources/styles/word_grid/word_grid_tile_letter_contained_style.tres")
 
+
 enum States {LOCKED, SELECTED, ACTIVE, LETTER_HIT, LETTER_CONTAINED}
 
 func _ready() -> void:
 	add_theme_stylebox_override("panel", locked_style)
+
+static func init() -> Tile:
+	var tile = TILE_SCENE.instantiate()
+	return tile
 	
 func set_state(state: States) -> void:
 	match state:
@@ -37,4 +44,3 @@ func get_letter() -> String:
 
 func clear_content() -> void:
 	letter_label.text = ""
-	

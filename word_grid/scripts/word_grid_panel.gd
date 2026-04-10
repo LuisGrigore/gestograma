@@ -6,15 +6,13 @@ extends Panel
 
 @onready var container := $CenterContainer/VBoxContainer
 
-var TileRowScene := preload("res://word_grid/scenes/word_grid_tile_row.tscn")
 var tile_rows: Array[TileRow] = []
 var active_tile_row := 0
 
-func _on_accepted(success:bool) -> void:
+func _on_accepted(success: bool) -> void:
 	if success:
 		GameController._web_bus.send_event("Message", {"content": "Successs!!!!"})
 		return
-	active_tile_row
 	tile_rows[active_tile_row].accepted.disconnect(_on_accepted)
 	active_tile_row += 1
 	tile_rows[active_tile_row].activate()
@@ -22,7 +20,7 @@ func _on_accepted(success:bool) -> void:
 
 func _ready() -> void:
 	for i in range(max_tries):
-		var tile_row: TileRow = TileRowScene.instantiate()
+		var tile_row: TileRow = TileRow.init()
 		tile_row.target_word = target_word
 		container.add_child(tile_row)
 		tile_rows.append(tile_row)

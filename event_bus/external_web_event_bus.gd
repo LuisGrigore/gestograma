@@ -26,7 +26,7 @@ func _register_js_bridge():
 # =============== API PÚBLICA GODOT ===================
 # =====================================================
 func send_event(event_type: String, payload):
-	super.send_event(event_type,payload)
+	super.send_event(event_type, payload)
 	_dispatch_event_to_js(event_type, payload)
 
 

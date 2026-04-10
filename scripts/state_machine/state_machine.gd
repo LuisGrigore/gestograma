@@ -7,7 +7,7 @@ class_name StateMachine
 var states: Array[State] = []
 var current_state: State = null
 
-signal state_change(old_state:String, new_state:String)
+signal state_change(old_state: String, new_state: String)
 
 func _find_state(new_state: String) -> State:
 	for state in states:
@@ -16,7 +16,7 @@ func _find_state(new_state: String) -> State:
 	push_warning("State %s not found" % new_state)
 	return null
 
-func _on_change_state_request(new_state: String, context:= {}) -> void:
+func _on_change_state_request(new_state: String, context := {}) -> void:
 	change_states(new_state, context)
 
 func _populate_states() -> void:
@@ -54,7 +54,7 @@ func on_event(event) -> void:
 	else:
 		push_warning("No current state set")
 
-static func get_instance(states:Array[State], initial_state: String, initial_context:={}) -> StateMachine:
+static func get_instance(states: Array[State], initial_state: String, initial_context := {}) -> StateMachine:
 	var new_state_machine := StateMachine.new()
 	for state in states:
 		new_state_machine.add_child(state)

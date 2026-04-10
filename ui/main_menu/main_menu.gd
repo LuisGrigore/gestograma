@@ -9,7 +9,7 @@ static func init() -> MainMenu:
 	return main_menu
 
 func _ready() -> void:
-	var button:Button = $Panel/VBoxContainer/Button
+	var button: Button = $Panel/VBoxContainer/Button
 	button.pressed.connect(_on_start_game_button_pressed)
 	
 func _on_start_game_button_pressed():

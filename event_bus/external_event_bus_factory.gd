@@ -1,8 +1,8 @@
 class_name ExternalEventBusFactory
 
-enum BusType { WEB }
+enum BusType {WEB}
 
-func create_bus(type:BusType) -> AbstractExternalEventBus:
+func create_bus(type: BusType) -> AbstractExternalEventBus:
 	var external_event_bus: AbstractExternalEventBus
 	match type:
 		BusType.WEB:

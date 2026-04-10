@@ -11,4 +11,3 @@ func on_enter(context := {}) -> void:
 	for tile in tiles:
 		tile.clear_content()
 		tile.set_state(Tile.States.LOCKED)
-		
