@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://h0qu7sbe8n4l"]
 
-[ext_resource type="PackedScene" uid="uid://bjvqkblg7vtxo" path="res://word_grid/scenes/word_grid_panel.tscn" id="1_7tke1"]
+[ext_resource type="PackedScene" uid="uid://bjvqkblg7vtxo" path="res://components/word_grid/scenes/word_grid_panel.tscn" id="1_7tke1"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rxrf0"]
 viewport_path = NodePath("SubViewport")

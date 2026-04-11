@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvy4se42ejj8e"]
 
-[ext_resource type="Script" uid="uid://b5rnme5m04g1s" path="res://levels/alphabet_level/alphabet_level.gd" id="1_njr36"]
-[ext_resource type="PackedScene" uid="uid://h0qu7sbe8n4l" path="res://word_grid/scenes/word_grid.tscn" id="2_0o1s7"]
+[ext_resource type="Script" uid="uid://b5rnme5m04g1s" path="res://game/levels/alphabet_level/alphabet_level.gd" id="1_njr36"]
+[ext_resource type="PackedScene" uid="uid://h0qu7sbe8n4l" path="res://components/word_grid/scenes/word_grid.tscn" id="2_0o1s7"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_njr36"]
 viewport_path = NodePath("SubViewport")

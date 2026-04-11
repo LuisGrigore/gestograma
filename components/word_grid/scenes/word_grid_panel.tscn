@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bjvqkblg7vtxo"]
 
-[ext_resource type="Script" uid="uid://cw3hvofm05m3w" path="res://word_grid/scripts/word_grid_panel.gd" id="1_8ouvc"]
+[ext_resource type="Script" uid="uid://cw3hvofm05m3w" path="res://components/word_grid/scripts/word_grid_panel.gd" id="1_8ouvc"]
 
 [node name="WordGridPanel" type="Panel" unique_id=134962287]
 offset_right = 512.0

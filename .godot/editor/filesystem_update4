@@ -14,3 +14,13 @@ res://word_grid/scripts/word_grid_tile_row/states/word_grid_tile_row_idle_state.
 res://word_grid/scripts/word_grid_tile_row/states/word_grid_tile_row_listening_state.gd
 res://word_grid/scripts/word_grid_tile_row/states/word_grid_tile_row_lock_state.gd
 res://word_grid/scripts/word_grid_tile_row/states/word_grid_tile_row_selecting_state.gd
+res://components/main_menu/main_menu.gd
+res://components/main_menu/main_menu.tscn
+res://components/word_grid/scenes/word_grid.tscn
+res://components/word_grid/scenes/word_grid_panel.tscn
+res://components/word_grid/scenes/word_grid_tile_row.tscn
+res://components/word_grid/scripts/word_grid_tile_row/word_grid_tile_row.gd
+res://components/word_grid_tile/scenes/word_grid_tile.tscn
+res://components/word_grid_tile/scripts/word_grid_tile.gd
+res://game/levels/alphabet_level/alphabet_level.gd
+res://game/levels/alphabet_level/alphabet_level.tscn

@@ -1,7 +1,7 @@
 extends GridContainer
 class_name TileRow
 
-const TILE_ROW_SCENE := preload("res://word_grid/scenes/word_grid_tile_row.tscn")
+const TILE_ROW_SCENE := preload("res://components/word_grid/scenes/word_grid_tile_row.tscn")
 
 @export var target_word := ""
 

@@ -1,6 +1,6 @@
 class_name MainMenu extends Control
 
-const MAIN_MENU_SCENE = preload("res://ui/main_menu/main_menu.tscn")
+const MAIN_MENU_SCENE = preload("res://components/main_menu/main_menu.tscn")
 
 signal start_game
 
