@@ -1,15 +1,15 @@
 extends Panel
 class_name Tile
 
-const TILE_SCENE := preload("res://components/word_grid_tile/scenes/word_grid_tile.tscn")
+const TILE_SCENE := preload("uid://hitecpmmu241")
 
 @onready var letter_label: Label = $Letter
 
-var locked_style = preload("res://components/word_grid_tile/styles/word_grid_tile_locked_style.tres")
-var selected_style = preload("res://components/word_grid_tile/styles/word_grid_tile_selected_style.tres")
-var active_style = preload("res://components/word_grid_tile/styles/word_grid_tile_active_style.tres")
-var letter_hit_style = preload("res://components/word_grid_tile/styles/word_grid_tile_letter_hit_style.tres")
-var letter_conteined_style = preload("res://components/word_grid_tile/styles/word_grid_tile_letter_contained_style.tres")
+var locked_style = preload("uid://cjveun3i71m5k")
+var selected_style = preload("uid://bsbpif4mjy8ok")
+var active_style = preload("uid://5425pjaibxcf")
+var letter_hit_style = preload("uid://bujekju5f8hoq")
+var letter_conteined_style = preload("uid://dvbauv0vvs6ur")
 
 
 enum States {LOCKED, SELECTED, ACTIVE, LETTER_HIT, LETTER_CONTAINED}

@@ -1,6 +1,5 @@
 extends Panel
 
-
 @export var max_tries := 0
 @export var target_word := ""
 

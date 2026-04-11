@@ -24,3 +24,5 @@ res://components/word_grid_tile/scenes/word_grid_tile.tscn
 res://components/word_grid_tile/scripts/word_grid_tile.gd
 res://game/levels/alphabet_level/alphabet_level.gd
 res://game/levels/alphabet_level/alphabet_level.tscn
+res://core/scene_manager/scene_manager.gd
+res://components/word_grid/scripts/word_grid_panel.gd

@@ -1,6 +1,8 @@
 class_name SceneManager
 extends Node
 
+const SCENE_MANAGER_SCENE = preload("uid://dlucn6au46whd")
+
 @onready var _ui: Control = $UI
 @onready var _world_2d: Node2D = $World2D
 @onready var _world_3d: Node3D = $World3D
@@ -9,6 +11,11 @@ extends Node
 func _clear_children(node: Node) -> void:
 	for child in node.get_children():
 		child.queue_free()
+
+#-----Scene Constructor
+static func init() -> SceneManager:
+	var scene_manager = SCENE_MANAGER_SCENE.instantiate()
+	return scene_manager
 
 #-----Setters
 func set_ui_packed(scene: PackedScene) -> Node:
