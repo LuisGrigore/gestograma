@@ -18,9 +18,11 @@ func _on_accepted(success: bool) -> void:
 	tile_rows[active_tile_row].accepted.connect(_on_accepted)
 
 func _ready() -> void:
+	var key_input_gatherer := TileRowKeyInputGatherer.new()
+	add_child(key_input_gatherer)
 	for i in range(max_tries):
 		var tile_row_model = TileRowModel.init(target_word)
-		var tile_row: TileRowController = TileRowController.init(tile_row_model)
+		var tile_row: TileRowController = TileRowController.init(tile_row_model,null,key_input_gatherer)
 		container.add_child(tile_row)
 		tile_rows.append(tile_row)
 	

@@ -1,3 +1,6 @@
-res://components/word_grid/components/word_tile_row/scenes/word_tile_row.tscn
-res://components/word_grid/components/word_tile_row/scripts/word_tile_row_view.gd
-res://components/word_grid/components/word_tile_row/scripts/word_tile_row_controller.gd
+res://components/word_grid/components/word_tile_row/input/implementations/key_input_gatherer.gd
+res://components/word_grid/components/word_tile_row/controller/word_tile_row_controller.tscn
+res://components/word_grid/components/word_tile_row/input/input_gatherer.gd
+res://components/word_grid/components/word_tile_row/controller/word_tile_row_controller.gd
+res://components/word_grid/scripts/word_grid_panel.gd
+res://components/word_grid/scenes/word_grid_panel.tscn

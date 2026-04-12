@@ -3,23 +3,25 @@ class_name TileRowListeningState
 
 var _model: TileRowModel = null
 var _view:TileRowView = null
+var _input_gatherer:TileRowInputGatherer = null
 var _current_index := 0
 
-static func get_instance(model: TileRowModel, view:TileRowView) -> TileRowListeningState:
+static func get_instance(model: TileRowModel, view:TileRowView, input_gatherer: TileRowInputGatherer) -> TileRowListeningState:
 	var new_state = TileRowListeningState.new()
 	new_state.name = "TileRowListeningState"
 	new_state._model = model
 	new_state._view = view
+	new_state._input_gatherer = input_gatherer
 	return new_state
 
 func on_enter(context := {}) -> void:
 	_current_index = context["index"]
 	_view.set_active(true)
-	GameController.input_bus.letter.connect(_on_letter)
+	_input_gatherer.letter.connect(_on_letter)
 
 func on_exit() -> void:
 	_view.set_active(false)
-	GameController.input_bus.letter.disconnect(_on_letter)
+	_input_gatherer.letter.disconnect(_on_letter)
 
 func _on_letter(letter: String) -> void:
 	_model.set_letter_at_index(letter, _current_index)

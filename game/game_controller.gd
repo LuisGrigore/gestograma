@@ -40,4 +40,5 @@ func _unhandled_input(event) -> void:
 	elif event is InputEventKey and event.pressed and not event.echo:
 		if event.unicode > 0:
 			var letter := String.chr(event.unicode)
-			input_bus.letter.emit(letter)
+			if letter.length() == 1 and (letter >= "a" and letter <= "z") or (letter >= "A" and letter <= "Z"):
+				input_bus.letter.emit(letter.to_upper())

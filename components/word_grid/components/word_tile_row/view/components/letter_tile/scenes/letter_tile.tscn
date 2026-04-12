@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://hitecpmmu241"]
 
-[ext_resource type="StyleBox" uid="uid://5425pjaibxcf" path="res://components/word_grid/components/word_tile_row/components/letter_tile/styles/word_grid_tile_active_style.tres" id="1_vuh3q"]
-[ext_resource type="Script" uid="uid://cplo5x8fgie4r" path="res://components/word_grid/components/word_tile_row/components/letter_tile/scripts/letter_tile.gd" id="2_ecleg"]
+[ext_resource type="StyleBox" uid="uid://5425pjaibxcf" path="res://components/word_grid/components/word_tile_row/view/components/letter_tile/styles/word_grid_tile_active_style.tres" id="1_vuh3q"]
+[ext_resource type="Script" uid="uid://cplo5x8fgie4r" path="res://components/word_grid/components/word_tile_row/view/components/letter_tile/scripts/letter_tile.gd" id="2_ecleg"]
 
 [node name="Tile" type="Panel" unique_id=1641759670 node_paths=PackedStringArray("letter_label")]
 custom_minimum_size = Vector2(64, 64)
