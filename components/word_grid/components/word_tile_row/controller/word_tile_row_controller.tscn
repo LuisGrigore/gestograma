@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://brt4wkfjp534f"]
-
-[ext_resource type="Script" uid="uid://bvyg1ci1mhnq2" path="res://components/word_grid/components/word_tile_row/controller/word_tile_row_controller.gd" id="1_kv4ev"]
-
-[node name="Controller" type="MarginContainer" unique_id=1355151508]
-script = ExtResource("1_kv4ev")

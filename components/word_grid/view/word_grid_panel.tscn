@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bjvqkblg7vtxo"]
+
+[ext_resource type="Script" uid="uid://d28qbdcf6xmia" path="res://components/word_grid/view/word_grid_view.gd" id="1_yvvyc"]
+
+[node name="WordGridPanel" type="Panel" unique_id=134962287 node_paths=PackedStringArray("_container")]
+offset_right = 512.0
+offset_bottom = 512.0
+script = ExtResource("1_yvvyc")
+_container = NodePath("CenterContainer/VBoxContainer")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1288634438]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=995654932]
+layout_mode = 2
+alignment = 1

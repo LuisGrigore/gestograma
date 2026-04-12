@@ -1,3 +1,5 @@
+Node
+MeshInstance3D
 MarginContainer
 Container
 GridContainer
@@ -11,4 +13,3 @@ Node2D
 WorldEnvironment
 Button
 VBoxContainer
-Label

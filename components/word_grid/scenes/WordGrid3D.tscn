@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c67wkx8lnvhib"]
+
+[ext_resource type="Script" uid="uid://e4if4g1gyd1" path="res://components/word_grid/scenes/word_grid_3d.gd" id="1_lepgc"]
+
+[node name="WordGrid3D" type="Node3D" unique_id=190005225 node_paths=PackedStringArray("_view", "_controller")]
+script = ExtResource("1_lepgc")
+_view = NodePath("")
+_controller = NodePath("")
