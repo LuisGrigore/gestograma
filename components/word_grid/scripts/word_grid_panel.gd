@@ -5,7 +5,7 @@ extends Panel
 
 @onready var container := $CenterContainer/VBoxContainer
 
-var tile_rows: Array[TileRow] = []
+var tile_rows: Array[TileRowController] = []
 var active_tile_row := 0
 
 func _on_accepted(success: bool) -> void:
@@ -19,8 +19,8 @@ func _on_accepted(success: bool) -> void:
 
 func _ready() -> void:
 	for i in range(max_tries):
-		var tile_row: TileRow = TileRow.init()
-		tile_row.target_word = target_word
+		var tile_row_model = TileRowModel.init(target_word)
+		var tile_row: TileRowController = TileRowController.init(tile_row_model)
 		container.add_child(tile_row)
 		tile_rows.append(tile_row)
 	

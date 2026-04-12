@@ -13,7 +13,7 @@ albedo_texture = SubResource("ViewportTexture_rxrf0")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_noarx"]
 
-[node name="WordGridPlane" type="MeshInstance3D" unique_id=2009564734]
+[node name="WordGrid" type="MeshInstance3D" unique_id=2009564734]
 transform = Transform3D(0.18518355, 0, 0, 0, -4.3711385e-08, -0.18557072, 0, 0.99999994, -8.111554e-09, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_a202f")
 mesh = SubResource("PlaneMesh_noarx")
