@@ -1,4 +1,4 @@
-class_name TileRowModel extends Resource
+class_name WordRowModel extends Resource
 
 enum RowState {INNACTIVE, ACTIVE, VALIDATED}
 enum LetterState {BLANK, HIT, CONTAINED}
@@ -8,8 +8,8 @@ var _letters:Array[String] = []
 var _letter_states:Array[LetterState] = []
 var _row_state := RowState.INNACTIVE
 
-static func init(target_word:String) -> TileRowModel:
-	var tile_row_model = TileRowModel.new()
+static func init(target_word:String) -> WordRowModel:
+	var tile_row_model = WordRowModel.new()
 	target_word = target_word.to_upper()
 	tile_row_model._target_word = target_word
 	tile_row_model._row_state = RowState.INNACTIVE

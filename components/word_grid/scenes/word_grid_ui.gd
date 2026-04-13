@@ -1,12 +1,12 @@
 class_name WordGridUi extends Control
 
-@export var _view :WordGridView = null#$WordGridPanel
-@export var _controller :WordGridController = null #$Controller
+@export var _view :WordGridView = null
+@export var _controller :WordGridController = null
 var _model:WordGridModel = null
-var _input_gatherer: TileRowInputGatherer = null
+var _input_gatherer: WordRowInputGatherer = null
 signal completed(success:bool)
 
-func init_instance(model:WordGridModel, input_gatherer: TileRowInputGatherer) -> void:
+func init_instance(model:WordGridModel, input_gatherer: WordRowInputGatherer) -> void:
 	_model = model
 	_input_gatherer = input_gatherer
 	_view.init_instance(_model)

@@ -1,5 +1,7 @@
 extends Node
 
+const DEBUG := true
+
 @onready var input_bus = InputBus.new()
 @onready var _web_bus = ExternalWebEventBus.new()
 

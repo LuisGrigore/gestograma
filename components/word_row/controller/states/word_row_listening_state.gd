@@ -1,14 +1,14 @@
 extends State
-class_name TileRowListeningState
+class_name WordRowListeningState
 
-var _model: TileRowModel = null
-var _view:TileRowView = null
-var _input_gatherer:TileRowInputGatherer = null
+var _model: WordRowModel = null
+var _view:WordRowView = null
+var _input_gatherer:WordRowInputGatherer = null
 var _current_index := 0
 
-static func get_instance(model: TileRowModel, view:TileRowView, input_gatherer: TileRowInputGatherer) -> TileRowListeningState:
-	var new_state = TileRowListeningState.new()
-	new_state.name = "TileRowListeningState"
+static func get_instance(model: WordRowModel, view:WordRowView, input_gatherer: WordRowInputGatherer) -> WordRowListeningState:
+	var new_state = WordRowListeningState.new()
+	new_state.name = "WordRowListeningState"
 	new_state._model = model
 	new_state._view = view
 	new_state._input_gatherer = input_gatherer
@@ -26,4 +26,4 @@ func on_exit() -> void:
 func _on_letter(letter: String) -> void:
 	_model.set_letter_at_index(letter, _current_index)
 	_view.update_at_index(_current_index)
-	change_state_request.emit("TileRowSelectingState", {"index": _current_index + 1})
+	change_state_request.emit("WordRowSelectingState", {"index": _current_index + 1})

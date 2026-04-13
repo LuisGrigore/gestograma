@@ -1,4 +1,4 @@
-class_name TileRowInputGatherer extends Node
+class_name WordRowInputGatherer extends Node
 
 enum SlideDirection {LEFT, RIGHT}
 

@@ -1,12 +1,12 @@
 class_name WordGrid3D extends Node3D
 
-@export var _word_grid_ui :WordGridUi = null#$SubViewport/WordGridUi
+@export var _word_grid_ui :WordGridUi = null
 
 var _model:WordGridModel = null
-var _input_gatherer: TileRowInputGatherer = null
+var _input_gatherer: WordRowInputGatherer = null
 signal completed(success:bool)
 
-func init_instance(model: WordGridModel, input_gatherer: TileRowInputGatherer) -> void:
+func init_instance(model: WordGridModel, input_gatherer: WordRowInputGatherer) -> void:
 	_model = model
 	_input_gatherer = input_gatherer
 	_word_grid_ui.init_instance(_model, _input_gatherer)

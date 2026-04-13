@@ -1,16 +1,16 @@
-class_name TileRowView extends GridContainer
+class_name WordRowView extends GridContainer
 
-@export var _model:TileRowModel = null
+@export var _model:WordRowModel = null
 
 var _tiles:Array[Tile] = [] 
 var _current_focus := -1
 
-static func init(model: TileRowModel) -> TileRowView:
-	var tile_row_view := TileRowView.new()
+static func init(model: WordRowModel) -> WordRowView:
+	var tile_row_view := WordRowView.new()
 	tile_row_view.init_instance(model)
 	return tile_row_view
 	
-func init_instance(model: TileRowModel) -> void:
+func init_instance(model: WordRowModel) -> void:
 	_model = model
 	for i in _model.get_word_length():
 		var tile = Tile.init()
@@ -26,11 +26,11 @@ func update_at_index(index:int) -> void:
 	_tiles[index].set_letter(_model.get_letter_at_index(index))
 	var state := _model.get_letter_state_at_index(index)
 	match state:
-		TileRowModel.LetterState.BLANK:
+		WordRowModel.LetterState.BLANK:
 			_tiles[index].set_state(Tile.States.LOCKED)
-		TileRowModel.LetterState.CONTAINED:
+		WordRowModel.LetterState.CONTAINED:
 			_tiles[index].set_state(Tile.States.LETTER_CONTAINED)
-		TileRowModel.LetterState.HIT:
+		WordRowModel.LetterState.HIT:
 			_tiles[index].set_state(Tile.States.LETTER_HIT)
 	_tiles[index].set_letter(_model.get_letter_at_index(index))
 	
@@ -48,7 +48,7 @@ func set_focus_at_index(index: int) -> void:
 	if index >= _tiles.size() or index < 0:
 		push_error("Index out of bounds for tiles array.  ", index)
 		return
-	if _model.get_letter_state_at_index(index) != TileRowModel.LetterState.BLANK:
+	if _model.get_letter_state_at_index(index) != WordRowModel.LetterState.BLANK:
 		return
 	clear_focus()
 	_tiles[index].set_state(Tile.States.SELECTED)

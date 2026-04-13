@@ -1,4 +1,4 @@
-class_name TileRowKeyInputGatherer extends TileRowInputGatherer
+class_name WordRowKeyInputGatherer extends WordRowInputGatherer
 
 
 func _input(event) -> void:

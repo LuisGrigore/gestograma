@@ -1,13 +1,13 @@
 extends State
-class_name TileRowLockState
+class_name WordRowLockState
 
-var _model:TileRowModel = null
-var _view:TileRowView = null
+var _model:WordRowModel = null
+var _view:WordRowView = null
 signal word_submitted(success: bool)
 
-static func get_instance(model: TileRowModel, view: TileRowView) -> TileRowLockState:
-	var new_state = TileRowLockState.new()
-	new_state.name = "TileRowLockState"
+static func get_instance(model: WordRowModel, view: WordRowView) -> WordRowLockState:
+	var new_state = WordRowLockState.new()
+	new_state.name = "WordRowLockState"
 	new_state._model = model
 	new_state._view = view
 	return new_state
@@ -20,7 +20,7 @@ func on_enter(context := {}) -> void:
 	
 	for i in _model.get_word_length():
 		if target_word[i] == _model.get_letter_at_index(i):
-			_model.set_letter_state_at_index(TileRowModel.LetterState.HIT, i)
+			_model.set_letter_state_at_index(WordRowModel.LetterState.HIT, i)
 			remaining_letters[i] = null
 		else:
 			is_valid = false
@@ -31,9 +31,9 @@ func on_enter(context := {}) -> void:
 		if target_word[i] == letter:
 			continue
 		if remaining_letters.has(letter):
-			_model.set_letter_state_at_index(TileRowModel.LetterState.CONTAINED, i)
+			_model.set_letter_state_at_index(WordRowModel.LetterState.CONTAINED, i)
 			remaining_letters[remaining_letters.find(letter)] = null
 		else:
-			_model.set_letter_state_at_index(TileRowModel.LetterState.BLANK, i)
+			_model.set_letter_state_at_index(WordRowModel.LetterState.BLANK, i)
 	_view.update()
 	word_submitted.emit(is_valid)

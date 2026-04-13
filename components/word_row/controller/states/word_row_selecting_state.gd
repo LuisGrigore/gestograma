@@ -1,14 +1,14 @@
 extends State
-class_name TileRowSelectingState
+class_name WordRowSelectingState
 
-var _model: TileRowModel = null
-var _view:TileRowView = null
+var _model: WordRowModel = null
+var _view:WordRowView = null
 var _input_gatherer = null
 var _current_index := 0
 
-static func get_instance(model: TileRowModel, view:TileRowView, input_gatherer:TileRowInputGatherer) -> TileRowSelectingState:
-	var new_state = TileRowSelectingState.new()
-	new_state.name = "TileRowSelectingState"
+static func get_instance(model: WordRowModel, view:WordRowView, input_gatherer:WordRowInputGatherer) -> WordRowSelectingState:
+	var new_state = WordRowSelectingState.new()
+	new_state.name = "WordRowSelectingState"
 	new_state._model = model
 	new_state._view = view
 	new_state._input_gatherer = input_gatherer
@@ -43,16 +43,16 @@ func on_exit() -> void:
 	_input_gatherer.select.disconnect(_on_select)
 	_input_gatherer.accept.disconnect(_on_accept)
 
-func _on_slide(direction: TileRowInputGatherer.SlideDirection) -> void:
-	if direction == TileRowInputGatherer.SlideDirection.LEFT:
+func _on_slide(direction: WordRowInputGatherer.SlideDirection) -> void:
+	if direction == WordRowInputGatherer.SlideDirection.LEFT:
 		move_focus(FocusMovement.BACKWARD)
-	if direction == TileRowInputGatherer.SlideDirection.RIGHT:
+	if direction == WordRowInputGatherer.SlideDirection.RIGHT:
 		move_focus(FocusMovement.FORWARD)
 		
 func _on_select() -> void:
-	change_state_request.emit("TileRowListeningState", {"index": _current_index})
+	change_state_request.emit("WordRowListeningState", {"index": _current_index})
 	
 func _on_accept() -> void:
 	if !_model.is_complete():
 			return
-	change_state_request.emit("TileRowLockState")
+	change_state_request.emit("WordRowLockState")
