@@ -48,7 +48,7 @@ export const startApp = async () => {
   const detectHands = (time: number = 0) => {
     requestAnimationFrame(detectHands);
 
-    // evitar saturación (no lanzar otra inferencia si sigue procesando)
+    // evitar múltiples inferencias simultáneas
     if (isProcessing) return;
 
     // control de FPS
@@ -61,23 +61,51 @@ export const startApp = async () => {
 
     isProcessing = false;
 
-    // 📊 contar inferencias reales
+    // -----------------------------
+    // FPS counter
+    // -----------------------------
     frameCount++;
 
-    // 📈 calcular FPS cada segundo
     if (time - lastFpsTime >= 1000) {
-      const fps = frameCount;
-      console.log("Inference FPS:", fps);
-
+      console.log("Inference FPS:", frameCount);
       frameCount = 0;
       lastFpsTime = time;
     }
 
-    // 🖐️ enviar solo si hay manos
-    const hands = results.landmarks ?? [];
+    // -----------------------------
+    // Procesar manos
+    // -----------------------------
+    const landmarks = results.landmarks ?? [];
+    const world = results.worldLandmarks ?? [];
+    const handedness = results.handedness ?? [];
 
-    if (hands.length > 0) {
-      bus.sendEventToGodot("hands", hands);
+    let leftHand = null;
+    let rightHand = null;
+
+    for (let i = 0; i < landmarks.length; i++) {
+      const label = handedness[i]?.[0]?.categoryName;
+
+      const handData = {
+        landmarks: landmarks[i],
+        world: world[i],
+        timestamp: time,
+      };
+
+      if (label === "Left") {
+        leftHand = handData;
+      } else if (label === "Right") {
+        rightHand = handData;
+      }
+    }
+
+    // -----------------------------
+    // Enviar a Godot
+    // -----------------------------
+    if (leftHand || rightHand) {
+      bus.sendEventToGodot("hands", {
+        leftHand,
+        rightHand,
+      });
     }
   };
 
