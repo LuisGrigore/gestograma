@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://druxhnpqk6yip"]
 
 [ext_resource type="Script" uid="uid://dtvtmix35inlx" path="res://components/word_grid/scenes/word_grid_ui.gd" id="1_l57py"]
-[ext_resource type="PackedScene" uid="uid://bjvqkblg7vtxo" path="res://components/word_grid/view/word_grid_panel.tscn" id="2_iwd2s"]
+[ext_resource type="PackedScene" uid="uid://bjvqkblg7vtxo" path="res://components/word_grid/view/word_grid_view.tscn" id="2_iwd2s"]
 [ext_resource type="Script" uid="uid://cw3hvofm05m3w" path="res://components/word_grid/controller/word_grid_controller.gd" id="3_4gkh3"]
 
 [node name="WordGridUi" type="Control" unique_id=1335510929 node_paths=PackedStringArray("_view", "_controller")]
@@ -12,10 +12,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_l57py")
-_view = NodePath("WordGridPanel")
+_view = NodePath("WordGridView")
 _controller = NodePath("Controller")
 
-[node name="WordGridPanel" parent="." unique_id=134962287 instance=ExtResource("2_iwd2s")]
+[node name="WordGridView" parent="." unique_id=134962287 instance=ExtResource("2_iwd2s")]
 layout_mode = 0
 
 [node name="Controller" type="Node" parent="." unique_id=335754275]

@@ -19,12 +19,5 @@ func init_instance(model:WordGridModel) -> void:
 		_word_row_views.append(word_row_view)
 		_container.add_child(word_row_view)
 
-
-#func _ready() -> void:
-	#for word_row_model in _model.get_word_row_models():
-		#var word_row_view = WordRowView.init(word_row_model)
-		#_word_row_views.append(word_row_view)
-		#_container.add_child(word_row_view)
-
 func get_word_row_views() -> Array[WordRowView]:
 	return _word_row_views

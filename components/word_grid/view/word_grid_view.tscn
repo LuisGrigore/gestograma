@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d28qbdcf6xmia" path="res://components/word_grid/view/word_grid_view.gd" id="1_yvvyc"]
 
-[node name="WordGridPanel" type="Panel" unique_id=134962287 node_paths=PackedStringArray("_container")]
+[node name="WordGridView" type="Panel" unique_id=134962287 node_paths=PackedStringArray("_container")]
 offset_right = 512.0
 offset_bottom = 512.0
 script = ExtResource("1_yvvyc")
