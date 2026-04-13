@@ -14,6 +14,9 @@ static func init(model:WordGridModel) -> WordGridView:
 
 func init_instance(model:WordGridModel) -> void:
 	_model = model
+
+
+func _ready() -> void:
 	for word_row_model in _model.get_word_row_models():
 		var word_row_view = TileRowView.init(word_row_model)
 		_word_row_views.append(word_row_view)

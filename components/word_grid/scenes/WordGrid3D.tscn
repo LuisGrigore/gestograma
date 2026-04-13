@@ -1,8 +1,27 @@
 [gd_scene format=3 uid="uid://c67wkx8lnvhib"]
 
 [ext_resource type="Script" uid="uid://e4if4g1gyd1" path="res://components/word_grid/scenes/word_grid_3d.gd" id="1_lepgc"]
+[ext_resource type="PackedScene" uid="uid://druxhnpqk6yip" path="res://components/word_grid/scenes/WordGridUI.tscn" id="2_o4kbm"]
 
-[node name="WordGrid3D" type="Node3D" unique_id=190005225 node_paths=PackedStringArray("_view", "_controller")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_sx4ol"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lepgc"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_sx4ol")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_noarx"]
+
+[node name="WordGrid3D" type="MeshInstance3D" unique_id=2009564734 node_paths=PackedStringArray("_word_grid_ui")]
+transform = Transform3D(0.18518355, 0, 0, 0, -4.3711385e-08, -0.18557072, 0, 0.99999994, -8.111554e-09, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_lepgc")
+mesh = SubResource("PlaneMesh_noarx")
 script = ExtResource("1_lepgc")
-_view = NodePath("")
-_controller = NodePath("")
+_word_grid_ui = NodePath("SubViewport/WordGridUi")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1041448938]
+transparent_bg = true
+
+[node name="WordGridUi" parent="SubViewport" unique_id=1335510929 instance=ExtResource("2_o4kbm")]

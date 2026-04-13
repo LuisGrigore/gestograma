@@ -5,7 +5,6 @@ func _input(event) -> void:
 	# SLIDE LEFT
 	if event.is_action_pressed("ui_left"):
 		slide.emit(InputBus.SlideDirection.LEFT)
-		print("Left")
 
 	# SLIDE RIGHT
 	elif event.is_action_pressed("ui_right"):

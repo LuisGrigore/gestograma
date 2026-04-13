@@ -11,3 +11,8 @@ static func init() -> AlphabetLevel:
 	alphabet_level.word_grid_3d.init_instance(WordGridModel.init("HOLA", 5), input)
 	alphabet_level.add_child(input)
 	return alphabet_level
+
+#func _ready() -> void:
+	#var input := TileRowKeyInputGatherer.new()
+	#word_grid_3d.init_instance(WordGridModel.init("HOLA", 5), input)
+	#add_child(input)

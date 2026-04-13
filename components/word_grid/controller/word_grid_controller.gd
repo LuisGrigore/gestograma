@@ -19,12 +19,8 @@ func init_instance(model:WordGridModel, view:WordGridView, input_gatherer:TileRo
 	if _view == null:
 		_view = view
 	#_view.init_instance(model)
-	for i in model.get_word_row_models().size():
-		var controller = TileRowController.init(_model.get_word_row_models()[i], _view.get_word_row_views()[i], input_gatherer)
-		_word_row_controllers.append(controller)
-		add_child(controller)
+
 	_input_gatherer = input_gatherer
-	
 func _on_accepted(success: bool) -> void:
 	if success:
 		complete_status.emit(CompleteStatus.SUCCESS)
@@ -38,6 +34,10 @@ func _on_accepted(success: bool) -> void:
 	_word_row_controllers[_active_word_row].accepted.connect(_on_accepted)
 
 func _ready() -> void:
+	for i in _model.get_word_row_models().size():
+		var controller = TileRowController.init(_model.get_word_row_models()[i], _view.get_word_row_views()[i], _input_gatherer)
+		_word_row_controllers.append(controller)
+		add_child(controller)
 	if _word_row_controllers.size() > 0:
 		_word_row_controllers[_active_word_row].activate()
 		_word_row_controllers[_active_word_row].accepted.connect(_on_accepted)

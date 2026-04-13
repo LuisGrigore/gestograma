@@ -8,3 +8,7 @@ res://components/word_row/word_tile_row/controller/word_tile_row_controller.gd
 res://core/state_machine/state_machine.gd
 res://components/word_row/word_tile_row/view/word_tile_row_view.gd
 res://components/word_grid/view/word_grid_3d_view.tscn
+res://game/levels/alphabet_level/alphabet_level.tscn
+res://components/word_grid/scenes/WordGridUI.tscn
+res://components/word_grid/scenes/word_grid_ui.gd
+res://components/word_grid/view/word_grid_view.gd

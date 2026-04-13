@@ -3,6 +3,15 @@
 [ext_resource type="Script" uid="uid://b5rnme5m04g1s" path="res://game/levels/alphabet_level/alphabet_level.gd" id="1_njr36"]
 [ext_resource type="PackedScene" uid="uid://c67wkx8lnvhib" path="res://components/word_grid/scenes/WordGrid3D.tscn" id="2_cyks1"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_cyks1"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onlrf"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_cyks1")
+
 [node name="Level1" type="Node3D" unique_id=1317034863 node_paths=PackedStringArray("word_grid_3d")]
 script = ExtResource("1_njr36")
 word_grid_3d = NodePath("WordGrid3D")
@@ -13,4 +22,5 @@ word_grid_3d = NodePath("WordGrid3D")
 visible = false
 
 [node name="WordGrid3D" parent="." unique_id=190005225 instance=ExtResource("2_cyks1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.38239035)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.050525427, -0.08711481, -1.3493639)
+material_override = SubResource("StandardMaterial3D_onlrf")
