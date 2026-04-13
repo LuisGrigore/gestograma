@@ -1,1 +1,67 @@
+# -----------------------------
+# Build / Export
+# -----------------------------
 build/
+.export/
+.export.cfg
+
+# -----------------------------
+# Godot cache & generated files
+# -----------------------------
+.import/
+.godot/
+
+# Import metadata (Godot 4 usa .godot/imported)
+*.import
+
+# -----------------------------
+# Mono / C# (si usas Godot con C#)
+# -----------------------------
+.mono/
+data_*/
+mono_crash.*
+
+# Builds de C#
+bin/
+obj/
+
+# -----------------------------
+# Editor / OS
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# IDEs
+# -----------------------------
+.vscode/
+.idea/
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.sln
+
+# -----------------------------
+# Logs & temporales
+# -----------------------------
+*.log
+*.tmp
+*.bak
+
+# -----------------------------
+# Archivos de exportación pesados (opcional)
+# -----------------------------
+*.apk
+*.aab
+*.ipa
+*.exe
+*.x86_64
+*.zip
+*.tar.gz
+
+# -----------------------------
+# Tests / coverage (opcional)
+# -----------------------------
+.coverage
+coverage/
