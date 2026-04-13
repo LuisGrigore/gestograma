@@ -13,10 +13,10 @@ static func init() -> AlphabetLevel:
 	return alphabet_level
 
 func _ready() -> void:
-	word_grid_3d.complete_status.connect(_on_complete_status)
+	word_grid_3d.completed.connect(_on_completed)
 
-func _on_complete_status(status:bool):
-	if status:
+func _on_completed(success:bool):
+	if success:
 		print("SUCCESSSS!!!")
 	else:
 		print("WOMPWOMP")

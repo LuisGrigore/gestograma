@@ -6,11 +6,11 @@ class_name TileRowController extends Node
 
 var state_machine: StateMachine
 
-signal accepted(success: bool)
+signal word_submitted(success: bool)
 
 func _ready() -> void:
 	var lock_state = TileRowLockState.get_instance(_model,_view)
-	lock_state.validation.connect(_on_validation)
+	lock_state.word_submitted.connect(_on_word_submitted)
 
 	state_machine = StateMachine.get_instance([TileRowIdleState.get_instance(_model,_view),
 	TileRowListeningState.get_instance(_model,_view,_input_gatherer),
@@ -25,8 +25,8 @@ static func init(model: TileRowModel, view: TileRowView, input_gatherer: TileRow
 	tile_row._input_gatherer = input_gatherer
 	return tile_row
 
-func _on_validation(success: bool) -> void:
-	accepted.emit(success)
+func _on_word_submitted(success: bool) -> void:
+	word_submitted.emit(success)
 
 func activate() -> void:
 	state_machine.change_states("TileRowSelectingState", {"index": 0})

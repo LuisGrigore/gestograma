@@ -3,7 +3,7 @@ class_name TileRowLockState
 
 var _model:TileRowModel = null
 var _view:TileRowView = null
-signal validation(success: bool)
+signal word_submitted(success: bool)
 
 static func get_instance(model: TileRowModel, view: TileRowView) -> TileRowLockState:
 	var new_state = TileRowLockState.new()
@@ -36,4 +36,4 @@ func on_enter(context := {}) -> void:
 		else:
 			_model.set_letter_state_at_index(TileRowModel.LetterState.BLANK, i)
 	_view.update()
-	validation.emit(is_valid)
+	word_submitted.emit(is_valid)
