@@ -12,7 +12,11 @@ static func init() -> AlphabetLevel:
 	alphabet_level.add_child(input)
 	return alphabet_level
 
-#func _ready() -> void:
-	#var input := TileRowKeyInputGatherer.new()
-	#word_grid_3d.init_instance(WordGridModel.init("HOLA", 5), input)
-	#add_child(input)
+func _ready() -> void:
+	word_grid_3d.complete_status.connect(_on_complete_status)
+
+func _on_complete_status(status:bool):
+	if status:
+		print("SUCCESSSS!!!")
+	else:
+		print("WOMPWOMP")

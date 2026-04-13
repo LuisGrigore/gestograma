@@ -1,14 +1,5 @@
-res://components/word_grid/scenes/WordGrid3D.tscn
-res://components/word_grid/scenes/word_grid_3d.gd
-res://components/word_grid/view/word_grid_3d.gd
-res://game/levels/alphabet_level/alphabet_level.gd
-res://components/word_row/word_tile_row/input/implementations/key_input_gatherer.gd
-res://components/word_grid/controller/word_grid_controller.gd
-res://components/word_row/word_tile_row/controller/word_tile_row_controller.gd
-res://core/state_machine/state_machine.gd
-res://components/word_row/word_tile_row/view/word_tile_row_view.gd
-res://components/word_grid/view/word_grid_3d_view.tscn
-res://game/levels/alphabet_level/alphabet_level.tscn
 res://components/word_grid/scenes/WordGridUI.tscn
 res://components/word_grid/scenes/word_grid_ui.gd
-res://components/word_grid/view/word_grid_view.gd
+res://components/word_grid/scenes/WordGrid3D.tscn
+res://components/word_grid/scenes/word_grid_3d.gd
+res://game/levels/alphabet_level/alphabet_level.gd
