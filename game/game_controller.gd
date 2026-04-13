@@ -1,24 +1,30 @@
 extends Node
 
-const DEBUG := true
+const DEBUG := false
 
 @onready var input_bus = InputBus.new()
-@onready var _web_bus = ExternalWebEventBus.new()
+@onready var _web_bus: ExternalWebEventBus = null
 
 
 @onready var _scene_manager := get_tree().current_scene as SceneManager
 
 func _on_start_game():
 	_scene_manager.clear_ui()
-	_scene_manager.set_world_3d_node(AlphabetLevel.init())
+	_scene_manager.set_world_3d_node(AlphabetLevel.init(_web_bus))
 
 func _on_scene_manager_ready() -> void:
 	var menu: MainMenu = MainMenu.init()
 	_scene_manager.set_ui_node(menu)
 	menu.start_game.connect(_on_start_game)
 
+func _on_hands(hands) -> void:
+	print(hands)
+
 func _ready() -> void:
-	add_child(_web_bus)
+	if !DEBUG:
+		_web_bus = ExternalWebEventBus.new()
+		_web_bus.on_event("hands", _on_hands)
+		add_child(_web_bus)
 	_scene_manager.ready.connect(_on_scene_manager_ready)
 
 func _unhandled_input(event) -> void:

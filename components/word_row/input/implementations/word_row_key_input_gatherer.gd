@@ -1,6 +1,5 @@
 class_name WordRowKeyInputGatherer extends WordRowInputGatherer
 
-
 func _input(event) -> void:
 	# SLIDE LEFT
 	if event.is_action_pressed("ui_left"):
