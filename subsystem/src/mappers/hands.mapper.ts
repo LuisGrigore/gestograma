@@ -12,7 +12,7 @@ const mapLandmarks = (landmarks: NormalizedLandmark[]) =>
   landmarks.map(mapLandmark);
 
 
-export const map_hands = (result: {
+export const mapHands = (result: {
   inference: HandLandmarkerResult;
   time: number;
 }):HandsData => {

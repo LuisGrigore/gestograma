@@ -9,7 +9,7 @@ export type HandsDetectorOptions = {
   onResults: (results: HandLandmarkerResult, time: number) => void;
 };
 
-export const createHandsDetector = (options: HandsDetectorOptions) => {
+export const createHandsDetectionService = (options: HandsDetectorOptions) => {
   let video: HTMLVideoElement | null = null;
   let stream: MediaStream | null = null;
   let handLandmarker: HandLandmarker | null = null;
