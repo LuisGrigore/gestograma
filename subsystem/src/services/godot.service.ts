@@ -1,7 +1,16 @@
 import { GodotEventBus } from "../EventBus";
 import { HandsData } from "../models/hands.model";
 
-export const createGodotService = (bus: GodotEventBus) => {
+export interface GodotService {
+  sendHandData: (handData: HandsData) => void;
+  sendGesture: (callback: any) => void;
+  onStartGestureSend: (callback: () => void) => void;
+  onStopGestureSend: (callback: () => void) => void;
+  onStartHandDataSend: (callback: () => void) => void;
+  onStopHandDataSend: (callback: () => void) => void;
+}
+
+export const createGodotService = (bus: GodotEventBus): GodotService => {
   const onStartGestureSend = (startGestureSendHandler: () => void) => {
     bus.onEventFromGodot("StartGestureSend", startGestureSendHandler);
   };

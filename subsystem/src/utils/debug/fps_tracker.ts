@@ -1,4 +1,7 @@
-export const createFpsTracker = () => {
+
+export type FpsTracker = (time:number) => void
+
+export const createFpsTracker = ():FpsTracker => {
   let frameCount = 0;
   let lastTime = performance.now();
 

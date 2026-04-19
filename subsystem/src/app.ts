@@ -1,9 +1,8 @@
 import { GodotEventBus } from "./EventBus";
-import { HandLandmarkerResult } from "@mediapipe/tasks-vision";
-import { mapHands } from "./mappers/hands.mapper";
 import { createFpsTracker } from "./utils/debug/fps_tracker";
 import { createHandsDetectionService } from "./services/hand_detection.service";
 import { createGodotService } from "./services/godot.service";
+import { createSubsystemController } from "./controllers/subsystem.controller";
 
 const setupInput = (bus: GodotEventBus) => {
   document.addEventListener("keydown", (event) => {
@@ -20,23 +19,11 @@ const setupGodotEvents = (bus: GodotEventBus) => {
 export const startApp = async () => {
   const bus = new GodotEventBus();
   const godotService = createGodotService(bus);
+  const fpsTracker = createFpsTracker();
+  const handDetectionService = createHandsDetectionService(fpsTracker);
 
-  const trackFps = createFpsTracker();
-  const handleHands = (results: HandLandmarkerResult, time: number) => {
-    trackFps(time);
+  createSubsystemController({godotService, handDetectionService})
 
-    if (results.landmarks.length === 0 && results.handedness.length === 0)
-      return;
-
-    godotService.sendHandData(mapHands({ inference: results, time }));
-  };
-
-  const handDetectionService = createHandsDetectionService({
-    onResults: handleHands,
-  });
-
-  godotService.onStartHandDataSend(handDetectionService.start)
-  godotService.onStopHandDataSend(handDetectionService.stop)
 
   setupInput(bus);
   setupGodotEvents(bus);
