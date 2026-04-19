@@ -1,6 +1,6 @@
-import { HandsData } from "../models/hands.model";
+// import { HandsData } from "../models/hands.model";
 
-export type HandsPayload = {
-  leftHand: HandsData | null;
-  rightHand: HandsData | null;
-};
+// export type HandsPayload = {
+//   leftHand: HandsData | null;
+//   rightHand: HandsData | null;
+// };

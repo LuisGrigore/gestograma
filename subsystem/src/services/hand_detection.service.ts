@@ -1,21 +1,72 @@
 import {
   FilesetResolver,
   HandLandmarker,
-  HandLandmarkerResult,
 } from "@mediapipe/tasks-vision";
-import { HandsData } from "../models/hands.model";
+
 import { mapHands } from "../mappers/hands.mapper";
 import { FpsTracker } from "../utils/debug/fps_tracker";
+import { DualHandSample } from "../models/hands.model";
+
+const MAX_SEQUENCE_LENGTH = 60;
+
+class SlidingWindow<T> {
+  private buffer: T[];
+  private index = 0;
+  private filled = false;
+
+  constructor(private size: number) {
+    this.buffer = new Array(size);
+  }
+
+  add(value: T) {
+    this.buffer[this.index] = value;
+    this.index = (this.index + 1) % this.size;
+
+    if (this.index === 0) {
+      this.filled = true;
+    }
+  }
+
+  get(): T[] {
+    if (!this.filled) {
+      return this.buffer.slice(0, this.index);
+    }
+
+    return [
+      ...this.buffer.slice(this.index),
+      ...this.buffer.slice(0, this.index),
+    ];
+  }
+}
+
+
+interface CreateHandsDetectionServiceParams {
+  fpsTracker?: FpsTracker;
+  sequenceLength?: number;
+  camera?: {
+    width: number;
+    height: number;
+  };
+  fps?: number;
+}
 
 export interface HandDetectionService {
-  start: (onResult: (results: HandsData) => void) => void;
+  start: (
+    onHands: (results: DualHandSample) => void,
+    onHandsSequence?: (results: DualHandSample[]) => void,
+  ) => Promise<void>;
+
   stop: () => void;
   destroy: () => void;
 }
 
-export const createHandsDetectionService = (
-  fpsTracker?: FpsTracker,
-): HandDetectionService => {
+
+export const createHandsDetectionService = ({
+  fpsTracker,
+  sequenceLength,
+  camera = { width: 320, height: 240 },
+  fps = 30,
+}: CreateHandsDetectionServiceParams): HandDetectionService => {
   let video: HTMLVideoElement | null = null;
   let stream: MediaStream | null = null;
   let handLandmarker: HandLandmarker | null = null;
@@ -26,10 +77,12 @@ export const createHandsDetectionService = (
   let lastTime = 0;
   let isProcessing = false;
 
-  let onResults: ((results: HandsData) => void) | null = null;
+  let onHands: ((hands: DualHandSample) => void) | null = null;
+  let onHandsSequence: ((hands: DualHandSample[]) => void) | null = null;
 
-  const FPS = 30;
-  const interval = 1000 / FPS;
+  const interval = 1000 / fps;
+
+  let handsSequence: SlidingWindow<DualHandSample> | null = null;
 
   const init = async () => {
     video = document.createElement("video");
@@ -51,12 +104,18 @@ export const createHandsDetectionService = (
     });
 
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 320, height: 240 },
+      video: camera,
     });
 
     video.srcObject = stream;
-
     await video.play();
+
+    const finalSequenceLength =
+      sequenceLength ?? MAX_SEQUENCE_LENGTH;
+
+    handsSequence = new SlidingWindow<DualHandSample>(
+      finalSequenceLength,
+    );
   };
 
   const loop = (time: number) => {
@@ -71,30 +130,51 @@ export const createHandsDetectionService = (
     lastTime = time;
     isProcessing = true;
 
-    const results = handLandmarker.detectForVideo(video, time);
+    try {
+      const results = handLandmarker.detectForVideo(video, time);
 
-    isProcessing = false;
+      fpsTracker?.(time);
 
-    if (fpsTracker) fpsTracker(time);
+      if (!results.landmarks.length && !results.handedness.length) {
+        return;
+      }
 
-    if (results.landmarks.length === 0 && results.handedness.length === 0)
-      return;
+      const dualHandsSample = mapHands({
+        inference: results,
+        time,
+      });
 
-    onResults?.(mapHands({ inference: results, time }));
+      onHands?.(dualHandsSample);
+
+      if (handsSequence && onHandsSequence) {
+        handsSequence.add(dualHandsSample);
+        onHandsSequence(handsSequence.get());
+      }
+    } finally {
+      isProcessing = false;
+    }
   };
 
-  const start = async (callback: (results: HandsData) => void) => {
+ 
+  const start = async (
+    handleHands: (results: DualHandSample) => void,
+    handleHandsSequence?: (results: DualHandSample[]) => void,
+  ) => {
     if (running) return;
 
-    onResults = callback;
+    onHands = handleHands;
+    onHandsSequence = handleHandsSequence ?? null;
 
     if (!video || !handLandmarker) {
       await init();
     }
 
     running = true;
+    lastTime = 0;
+
     rafId = requestAnimationFrame(loop);
   };
+
 
   const stop = () => {
     running = false;
@@ -105,6 +185,7 @@ export const createHandsDetectionService = (
     }
   };
 
+ 
   const destroy = () => {
     stop();
 
@@ -115,7 +196,9 @@ export const createHandsDetectionService = (
     handLandmarker = null;
 
     video = null;
-    onResults = null;
+    onHands = null;
+    onHandsSequence = null;
+    handsSequence = null;
   };
 
   return {

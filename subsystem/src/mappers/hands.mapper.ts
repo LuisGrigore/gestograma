@@ -1,6 +1,10 @@
-import { HandLandmarkerResult, NormalizedLandmark } from "@mediapipe/tasks-vision";
+import {
+  HandLandmarkerResult,
+  NormalizedLandmark,
+} from "@mediapipe/tasks-vision";
 import { Landmark } from "../types/landmark.type";
-import { HandsData } from "../models/hands.model";
+import { DualHandSample } from "../models/hands.model";
+// import { HandsData } from "../models/hands.model";
 
 const mapLandmark = ({ x, y, z }: NormalizedLandmark) => ({
   x,
@@ -11,11 +15,10 @@ const mapLandmark = ({ x, y, z }: NormalizedLandmark) => ({
 const mapLandmarks = (landmarks: NormalizedLandmark[]) =>
   landmarks.map(mapLandmark);
 
-
 export const mapHands = (result: {
   inference: HandLandmarkerResult;
   time: number;
-}):HandsData => {
+}): DualHandSample => {
   const { inference, time } = result;
   const landmarks = inference.landmarks ?? [];
   const handedness = inference.handedness ?? [];
@@ -31,8 +34,13 @@ export const mapHands = (result: {
   );
 
   return {
-    leftHand,
-    rightHand,
-    timestamp: time,
+    right: {
+      landmarks: rightHand,
+      timestamp: time,
+    },
+    left: {
+      landmarks: leftHand,
+      timestamp: time,
+    },
   };
 };

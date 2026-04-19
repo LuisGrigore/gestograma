@@ -3,7 +3,8 @@ import { defineConfig } from "vite"
 export default defineConfig({
   build: {
 	//DESACTIVAR ESTO
-	minify: false,
+	//minify: false,
+	minify: true,
 
     lib: {
       entry: "src/index.ts",

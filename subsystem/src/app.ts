@@ -20,7 +20,7 @@ export const startApp = async () => {
   const bus = new GodotEventBus();
   const godotService = createGodotService(bus);
   const fpsTracker = createFpsTracker();
-  const handDetectionService = createHandsDetectionService(fpsTracker);
+  const handDetectionService = createHandsDetectionService({fpsTracker:fpsTracker, sequenceLength: 5});
 
   createSubsystemController({godotService, handDetectionService})
 

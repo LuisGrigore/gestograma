@@ -1,33 +1,23 @@
 import { GodotEventBus } from "../EventBus";
-import { HandsData } from "../models/hands.model";
+import { DualHandSample } from "../models/hands.model";
+// import { HandsData } from "../models/hands.model";
 
 export interface GodotService {
-  sendHandData: (handData: HandsData) => void;
+  sendHandData: (handData: DualHandSample) => void;
   sendGesture: (callback: any) => void;
-  onStartGestureSend: (callback: () => void) => void;
-  onStopGestureSend: (callback: () => void) => void;
-  onStartHandDataSend: (callback: () => void) => void;
-  onStopHandDataSend: (callback: () => void) => void;
+  onStartDataStream: (callback: () => void) => void;
+  onStopDataStream: (callback: () => void) => void;
 }
 
 export const createGodotService = (bus: GodotEventBus): GodotService => {
-  const onStartGestureSend = (startGestureSendHandler: () => void) => {
-    bus.onEventFromGodot("StartGestureSend", startGestureSendHandler);
+  const onStartDataStream = (startDataStreamHandler: () => void) => {
+    bus.onEventFromGodot("StartDataStream", startDataStreamHandler);
+  };
+    const onStopDataStream = (stopDataStreamHandler: () => void) => {
+    bus.onEventFromGodot("StopDataStream", stopDataStreamHandler);
   };
 
-  const onStopGestureSend = (stopGestureSendHandler: () => void) => {
-    bus.onEventFromGodot("StopGestureSend", stopGestureSendHandler);
-  };
-
-  const onStartHandDataSend = (startHandDataSendHandler: () => void) => {
-    bus.onEventFromGodot("StartHandDataSend", startHandDataSendHandler);
-  };
-
-  const onStopHandDataSend = (stopHandDataSendHandler: () => void) => {
-    bus.onEventFromGodot("StopHandDataSend", stopHandDataSendHandler);
-  };
-
-  const sendHandData = (handData: HandsData) => {
+  const sendHandData = (handData: DualHandSample) => {
     bus.sendEventToGodot("HandData", handData);
   };
   const sendGesture = (gesture: any) => {
@@ -37,9 +27,7 @@ export const createGodotService = (bus: GodotEventBus): GodotService => {
   return {
     sendHandData,
     sendGesture,
-    onStartGestureSend,
-    onStopGestureSend,
-    onStartHandDataSend,
-    onStopHandDataSend,
+    onStartDataStream,
+	onStopDataStream,
   };
 };
