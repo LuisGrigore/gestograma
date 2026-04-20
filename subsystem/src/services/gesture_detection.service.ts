@@ -1,4 +1,4 @@
-import * as tf from "@tensorflow/tfjs";
+import { InferenceSession, Tensor } from "onnxruntime-web";
 import { DualHandSample, HandSample } from "../models/hands.model";
 
 export type Gesture =
@@ -15,23 +15,11 @@ export type Gesture =
   | "F"
   | "G"
   | "H"
-  | "I";
-
-export interface GestureDetectionService {
-  detect: (sequence: DualHandSample[]) => Promise<Gesture>;
-  destroy: () => void;
-}
-
-const LEFT_GESTURES: Gesture[] = [
-  "NONE",
-  "SELECT",
-  "MOVE_LEFT",
-  "MOVE_RIGHT",
-  "ACCEPT",
-];
+  | "I"
+  | "J"
+  | "K";
 
 const RIGHT_GESTURES: Gesture[] = [
-  "NONE",
   "A",
   "B",
   "C",
@@ -41,100 +29,151 @@ const RIGHT_GESTURES: Gesture[] = [
   "G",
   "H",
   "I",
+  "J",
+  "K",
+  "NONE",
 ];
 
-export const createGestureDetectionService = (
-  leftModel: tf.LayersModel,
-  rightModel: tf.LayersModel,
-  confidenceThreshold: number,
-): GestureDetectionService => {
-  const extractFeatures = (hand: HandSample): number[] => {
-    return hand.landmarks.flatMap((l) => [l.x, l.y, l.z ?? 0]);
-  };
+// =========================
+// MATH (igual Python)
+// =========================
 
-  const predict = (
-    model: tf.LayersModel,
-    sequence: HandSample[],
-    gestureMap: Gesture[],
-  ): { gesture: Gesture; confidence: number } => {
-    return tf.tidy(() => {
-      const inputSeq = sequence.map(extractFeatures);
-      const input = tf.tensor(inputSeq).expandDims(0);
+const sigmoid = (x: number) =>
+  x >= 0 ? 1 / (1 + Math.exp(-x)) : Math.exp(x) / (1 + Math.exp(x));
 
-      const output = model.predict(input) as tf.Tensor;
-      const data = output.dataSync();
+const centroid = (lm: any[]) => {
+  let x = 0,
+    y = 0,
+    z = 0;
 
-      let maxIdx = 0;
-      let maxVal = data[0];
+  for (const l of lm) {
+    x += l.x;
+    y += l.y;
+    z += l.z ?? 0;
+  }
 
-      for (let i = 1; i < data.length; i++) {
-        if (data[i] > maxVal) {
-          maxVal = data[i];
-          maxIdx = i;
-        }
+  return [x / lm.length, y / lm.length, z / lm.length];
+};
+
+const norm = (v: number[]) => Math.sqrt(v[0] ** 2 + v[1] ** 2 + v[2] ** 2);
+
+// =========================
+// FEATURE ENGINEERING
+// =========================
+
+const extractFeatures = (sequence: HandSample[]) => {
+  const frames: number[][] = [];
+
+  for (let i = 0; i < sequence.length; i++) {
+    const curr = sequence[i].landmarks;
+
+    const currC = centroid(curr);
+    const wrist = curr[0];
+
+    const centered = curr.flatMap((l) => [
+      l.x - wrist.x,
+      l.y - wrist.y,
+      (l.z ?? 0) - (wrist.z ?? 0),
+    ]);
+
+    let velocity = [0, 0, 0];
+
+    if (i > 0) {
+      const prev = sequence[i - 1].landmarks;
+
+      const prevC = centroid(prev);
+
+      const dt = Math.max(
+        sequence[i].timestamp - sequence[i - 1].timestamp,
+        1e-6,
+      );
+
+      const d = [
+        (currC[0] - prevC[0]) / dt,
+        (currC[1] - prevC[1]) / dt,
+        (currC[2] - prevC[2]) / dt,
+      ];
+
+      const n = Math.max(norm(d), 1e-6);
+      const s = sigmoid(n);
+
+      const factor = s / n;
+
+      velocity = d.map((v) => v * factor);
+    }
+
+    frames.push([...centered, ...velocity]);
+  }
+
+  return frames;
+};
+
+// =========================
+// SERVICE
+// =========================
+export interface GestureDetectionService {
+  detect: (sequence: DualHandSample[]) => Promise<Gesture>;
+  destroy: () => void;
+}
+
+export const createGestureDetectionService = async (config: {
+  modelUrl: string;
+  confidenceThreshold: number;
+}) => {
+  const session = await InferenceSession.create(config.modelUrl, {
+    executionProviders: ["wasm"],
+  });
+
+  const inputName = session.inputNames[0];
+  const outputName = session.outputNames[0];
+
+  const predict = async (seq: HandSample[]) => {
+    const features = extractFeatures(seq);
+
+    const tensor = new Tensor("float32", Float32Array.from(features.flat()), [
+      1,
+      features.length,
+      features[0].length,
+    ]);
+
+    const out = await session.run({ [inputName]: tensor });
+
+    const data = out[outputName].data as Float32Array;
+
+    let maxIdx = 0;
+    let maxVal = data[0];
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i] > maxVal) {
+        maxVal = data[i];
+        maxIdx = i;
       }
+    }
 
-      return {
-        gesture: gestureMap[maxIdx] ?? "NONE",
-        confidence: maxVal,
-      };
-    });
+    return {
+      gesture: RIGHT_GESTURES[maxIdx],
+      confidence: maxVal,
+    };
   };
 
-  const detect = async (sequence: DualHandSample[]): Promise<Gesture> => {
+  const detect = async (sequence: DualHandSample[]) => {
     if (!sequence.length) return "NONE";
 
-    const leftSeq: HandSample[] = sequence
-      .map((s) => s.left)
-      .filter((h): h is HandSample => !!h);
+    const right = sequence.map((s) => s.right).filter(Boolean) as HandSample[];
 
-    const rightSeq: HandSample[] = sequence
-      .map((s) => s.right)
-      .filter((h): h is HandSample => !!h);
+    if (!right.length) return "NONE";
 
-    const hasLeft = leftSeq.length > 0;
-    const hasRight = rightSeq.length > 0;
+    const res = await predict(right);
 
-    let leftResult: { gesture: Gesture; confidence: number } | null = null;
-    let rightResult: { gesture: Gesture; confidence: number } | null = null;
-
-    if (hasLeft) {
-      leftResult = predict(leftModel, leftSeq, LEFT_GESTURES);
-    }
-
-    if (hasRight) {
-      rightResult = predict(rightModel, rightSeq, RIGHT_GESTURES);
-    }
-
-    let result: { gesture: Gesture; confidence: number } | null = null;
-
-    if (rightResult && !leftResult) {
-      result = rightResult;
-    } else if (leftResult && !rightResult) {
-      result = leftResult;
-    } else if (leftResult && rightResult) {
-      result =
-        rightResult.confidence >= leftResult.confidence
-          ? rightResult
-          : leftResult;
-    }
-
-    if (!result) return "NONE";
-
-    if (result.confidence < confidenceThreshold) {
+    if (res.confidence < config.confidenceThreshold) {
       return "NONE";
     }
 
-    return result.gesture;
-  };
-
-  const destroy = () => {
-    leftModel.dispose();
-    rightModel.dispose();
+    return res.gesture;
   };
 
   return {
     detect,
-    destroy,
+    destroy: () => session.release(),
   };
 };

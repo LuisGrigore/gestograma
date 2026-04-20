@@ -8,9 +8,3 @@ export type HandSample = {
 };
 
 export type DualHandSample = Partial<Record<Handedness, HandSample>>;
-
-// export type HandsData = {
-//   leftHand: Landmark[];
-//   rightHand: Landmark[];
-//   timestamp: number;
-// };

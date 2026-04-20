@@ -4,9 +4,8 @@ import {
 } from "@mediapipe/tasks-vision";
 import { Landmark } from "../types/landmark.type";
 import { DualHandSample } from "../models/hands.model";
-// import { HandsData } from "../models/hands.model";
 
-const mapLandmark = ({ x, y, z }: NormalizedLandmark) => ({
+const mapLandmark = ({ x, y, z }: NormalizedLandmark): Landmark => ({
   x,
   y,
   z,
@@ -15,31 +14,41 @@ const mapLandmark = ({ x, y, z }: NormalizedLandmark) => ({
 const mapLandmarks = (landmarks: NormalizedLandmark[]) =>
   landmarks.map(mapLandmark);
 
-export const mapHands = (result: {
-  inference: HandLandmarkerResult;
-  time: number;
-}): DualHandSample => {
+const getHand = (
+  landmarks: NormalizedLandmark[][],
+  handedness: any[],
+  type: "Left" | "Right"
+) => {
+  const idx = handedness.findIndex(
+    (h) => h[0]?.categoryName === type
+  );
+
+  if (idx === -1) return [];
+
+  return landmarks[idx] ?? [];
+};
+
+export const mapHands = (
+  result: {
+    inference: HandLandmarkerResult;
+    time: number;
+  }
+): DualHandSample => {
   const { inference, time } = result;
+
   const landmarks = inference.landmarks ?? [];
   const handedness = inference.handedness ?? [];
 
-  const leftHand: Landmark[] = mapLandmarks(
-    landmarks.filter((_, i) => handedness[i][0].categoryName === "Left")[0] ||
-      [],
-  );
-
-  const rightHand: Landmark[] = mapLandmarks(
-    landmarks.filter((_, i) => handedness[i][0].categoryName === "Right")[0] ||
-      [],
-  );
+  const left = getHand(landmarks, handedness, "Left");
+  const right = getHand(landmarks, handedness, "Right");
 
   return {
-    right: {
-      landmarks: rightHand,
+    left: {
+      landmarks: mapLandmarks(left),
       timestamp: time,
     },
-    left: {
-      landmarks: leftHand,
+    right: {
+      landmarks: mapLandmarks(right),
       timestamp: time,
     },
   };
