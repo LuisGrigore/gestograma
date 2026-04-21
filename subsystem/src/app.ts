@@ -81,6 +81,8 @@ export const startApp = async () => {
     rightHandDetectionService,
     leftHandDetectionService,
     rightGestureDetectionService,
+    cameraService,
+    landmarkerService,
   });
 
   setupInput(bus);

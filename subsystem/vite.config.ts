@@ -5,16 +5,16 @@ export default defineConfig({
     minify: false,
 
     lib: {
-      entry: "src/index.ts",   // 👈 cambia al entry correcto
+      entry: "src/index.ts",
       name: "Subsystem",
-      formats: ["iife"],           // 👈 CLAVE (compatible con script clásico)
+      formats: ["iife"],
       fileName: () => "subsystem.js",
     },
 
     target: "es2020",
 
-    outDir: "../build",           // 👈 se mantiene igual
+    outDir: "../build",
 
-    emptyOutDir: false,           // 👈 IMPORTANTE: NO borra el directorio
+    emptyOutDir: false,
   },
 });

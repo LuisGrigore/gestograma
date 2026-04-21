@@ -304,6 +304,8 @@ export const createGestureDetectionService = ({
   const gestures =
     handedness === "right" ? RIGHT_GESTURES : LEFT_GESTURES;
 
+  let isProcessing = false;
+
   const predict = async (seq: HandSample[]) => {
     const features = extractFeatures(seq);
 
@@ -336,13 +338,23 @@ export const createGestureDetectionService = ({
   const detect = async (sequence: HandSample[]) => {
     if (!sequence.length) return "NONE";
 
-    const res = await predict(sequence);
-
-    if (res.confidence < confidenceThreshold) {
-      return "NONE";
+    // Wait if another detection is in progress
+    while (isProcessing) {
+      await new Promise(resolve => setTimeout(resolve, 1));
     }
 
-    return res.gesture;
+    isProcessing = true;
+    try {
+      const res = await predict(sequence);
+
+      if (res.confidence < confidenceThreshold) {
+        return "NONE";
+      }
+
+      return res.gesture;
+    } finally {
+      isProcessing = false;
+    }
   };
 
   return {

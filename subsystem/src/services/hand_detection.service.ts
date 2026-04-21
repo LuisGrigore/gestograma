@@ -62,8 +62,10 @@ export const createHandDetectionService = ({
 
   let unsuscribe: (() => void) | null = null;
   let sequenceStarted = false;
+  let running = false;
 
   const start = async () => {
+    if (running) return;
     unsuscribe = landmarkerService.subscribe({
       canConsume: true,
       consume: (dualHandSample: DualHandSample) => {
@@ -86,12 +88,14 @@ export const createHandDetectionService = ({
       },
     });
 
-    await landmarkerService.start();
+    //await landmarkerService.start();
+    running = true;
   };
 
   const stop = () => {
     unsuscribe?.();
-    landmarkerService.stop();
+    //landmarkerService.stop();
+    running = false;
   };
 
   return {

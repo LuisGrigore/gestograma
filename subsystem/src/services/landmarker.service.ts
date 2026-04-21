@@ -44,7 +44,7 @@ export const createMediapipeLandmarkerService = async ({
   const start = async () => {
     if (running) return;
 
-    await cameraService.init();
+    //await cameraService.init();
 
     unsubscribe = cameraService.subscribe({
       canConsume: true,
@@ -67,7 +67,7 @@ export const createMediapipeLandmarkerService = async ({
         }
       },
     });
-    cameraService.start();
+   // cameraService.start();
     running = true;
   };
 
@@ -77,7 +77,7 @@ export const createMediapipeLandmarkerService = async ({
     unsubscribe?.();
     unsubscribe = null;
 
-    cameraService.stop();
+    //cameraService.stop();
     running = false;
   };
 

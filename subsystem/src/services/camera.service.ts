@@ -12,12 +12,11 @@ interface CameraParams {
   fps?: number;
 }
 
-export interface CameraService{
-  init: () => Promise<void>;
+export interface CameraService {
   start: () => void;
   stop: () => void;
-  getVideo: () => HTMLVideoElement | null;
-  subscribe: (subscriber:Subscriber<CameraFrame>) => () => void;
+  //getVideo: () => HTMLVideoElement | null;
+  subscribe: (subscriber: Subscriber<CameraFrame>) => () => void;
 }
 
 export const createCameraService = ({
@@ -68,9 +67,10 @@ export const createCameraService = ({
     });
   };
 
-  const start = () => {
+  const start = async() => {
     if (running) return;
-    if (!video) throw new Error("Camera not initialized");
+    await init();
+    if (!video) throw new Error("Camera faild to initialize");
 
     running = true;
     lastTime = 0;
@@ -90,13 +90,12 @@ export const createCameraService = ({
     video = null;
   };
 
-  const getVideo = () => video;
+  //const getVideo = () => video;
 
   return {
-    subscribe:publisher.subscribe,
-    init,
+    subscribe: publisher.subscribe,
     start,
     stop,
-    getVideo,
+    //getVideo,
   };
 };
