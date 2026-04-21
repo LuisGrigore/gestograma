@@ -11,7 +11,7 @@ import { createMediapipeLandmarkerService } from "./services/landmarker.service"
 
 const setupInput = (bus: GodotEventBus) => {
   document.addEventListener("keydown", (event) => {
-    bus.sendEventToGodot("input", event.key);
+    bus.sendEventToGodot("Gesture", event.key);
   });
 };
 

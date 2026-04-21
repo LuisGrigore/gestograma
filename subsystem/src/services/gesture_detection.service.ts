@@ -101,7 +101,7 @@ export interface GestureDetectionService {
 
 interface Params {
   handedness: Handedness;
-  session: InferenceSession; // 👈 inyectado
+  session: InferenceSession;
   confidenceThreshold: number;
 }
 

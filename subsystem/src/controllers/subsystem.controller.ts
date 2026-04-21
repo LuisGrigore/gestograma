@@ -34,8 +34,7 @@ export const createSubsystemController = (options: {
     consume: async (sequence: HandSample[]) => {
       const result = await rightGestureDetectionService.detect(sequence);
       console.log("RIGHT:", result);
-
-      //godotService.sendGesture(result);
+      godotService.sendGesture(result);
     },
   });
 
