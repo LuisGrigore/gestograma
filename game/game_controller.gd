@@ -11,6 +11,7 @@ const DEBUG := false
 func _on_start_game():
 	_scene_manager.clear_ui()
 	_scene_manager.set_world_3d_node(AlphabetLevel.init(_web_bus))
+	_web_bus.send_event("StartDataStream", null)
 
 func _on_scene_manager_ready() -> void:
 	var menu: MainMenu = MainMenu.init()
@@ -23,7 +24,7 @@ func _on_hands(hands) -> void:
 func _ready() -> void:
 	if !DEBUG:
 		_web_bus = ExternalWebEventBus.new()
-		_web_bus.on_event("hands", _on_hands)
+		_web_bus.on_event("HandData", _on_hands)
 		add_child(_web_bus)
 	_scene_manager.ready.connect(_on_scene_manager_ready)
 

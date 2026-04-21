@@ -1,9 +1,12 @@
 import { GodotEventBus } from "./EventBus";
 import { createFpsTracker } from "./utils/debug/fps_tracker";
-import { createHandsDetectionService } from "./services/hand_detection.service";
+import { createHandDetectionService } from "./services/hand_detection.service";
 import { createGodotService } from "./services/godot.service";
 import { createSubsystemController } from "./controllers/subsystem.controller";
 import { createGestureDetectionService } from "./services/gesture_detection.service";
+import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
+import { InferenceSession } from "onnxruntime-web";
+import { createCameraService } from "./services/camera.service";
 
 const setupInput = (bus: GodotEventBus) => {
   document.addEventListener("keydown", (event) => {
@@ -17,24 +20,69 @@ const setupGodotEvents = (bus: GodotEventBus) => {
   });
 };
 
+interface InitParams {
+  wasmPath?: string;
+  modelPath?: string;
+  numHands?: number;
+}
+
+export const createHandLandmarker = async ({
+  wasmPath = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
+  modelPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+  numHands = 2,
+}: InitParams = {}): Promise<HandLandmarker> => {
+  const vision = await FilesetResolver.forVisionTasks(wasmPath);
+
+  const handLandmarker = await HandLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: modelPath,
+      delegate: "GPU",
+    },
+    runningMode: "VIDEO",
+    numHands,
+  });
+
+  return handLandmarker;
+};
+
 export const startApp = async () => {
   const bus = new GodotEventBus();
+
   const godotService = createGodotService(bus);
+
   const fpsTracker = createFpsTracker();
-  const handDetectionService = createHandsDetectionService({
-	fps:18,
-    //fpsTracker: fpsTracker,
+
+  const cameraService = createCameraService();
+  const stream = await cameraService.init();
+  const landmarker = await createHandLandmarker();
+  const rightHandDetectionService = createHandDetectionService({
+    handedness: "right",
+    handLandmarker: landmarker,
+    fps: 18,
     sequenceLength: 20,
+    stream,
   });
-  const gestureDetectionService = await createGestureDetectionService({
-   // leftModelUrl: "./models/right/model.json",
-    modelUrl: "./models/right/model.onnx",
+  const leftHandDetectionService = createHandDetectionService({
+    handedness: "left",
+    handLandmarker: landmarker,
+    fps: 18,
+    sequenceLength: 20,
+    stream,
+  });
+
+  const rightGestureDetectionService = await createGestureDetectionService({
+    handedness: "right",
+    session: await InferenceSession.create("./models/right/model.onnx", {
+      executionProviders: ["wasm"],
+    }),
     confidenceThreshold: 0.7,
   });
+
   createSubsystemController({
     godotService,
-    handDetectionService,
-    gestureDetectionService,
+    rightHandDetectionService,
+    leftHandDetectionService,
+    rightGestureDetectionService,
   });
 
   setupInput(bus);
