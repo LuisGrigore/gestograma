@@ -7,6 +7,7 @@ import { createGestureDetectionService } from "./services/gesture_detection.serv
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
 import { InferenceSession } from "onnxruntime-web";
 import { createCameraService } from "./services/camera.service";
+import { createMediapipeLandmarkerService } from "./services/landmarker.service";
 
 const setupInput = (bus: GodotEventBus) => {
   document.addEventListener("keydown", (event) => {
@@ -52,22 +53,19 @@ export const startApp = async () => {
 
   const fpsTracker = createFpsTracker();
 
-  const cameraService = createCameraService();
-  const stream = await cameraService.init();
-  const landmarker = await createHandLandmarker();
+  const cameraService = createCameraService({ fps: 18 });
+  const landmarkerService = await createMediapipeLandmarkerService({
+    cameraService,
+  });
   const rightHandDetectionService = createHandDetectionService({
     handedness: "right",
-    handLandmarker: landmarker,
-    fps: 18,
     sequenceLength: 20,
-    stream,
+    landmarkerService: landmarkerService,
   });
   const leftHandDetectionService = createHandDetectionService({
     handedness: "left",
-    handLandmarker: landmarker,
-    fps: 18,
     sequenceLength: 20,
-    stream,
+    landmarkerService: landmarkerService,
   });
 
   const rightGestureDetectionService = await createGestureDetectionService({

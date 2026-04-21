@@ -16,38 +16,26 @@ export const createSubsystemController = (options: {
     rightGestureDetectionService,
   } = options;
 
+  rightHandDetectionService.suscribeHand({
+    canConsume: true,
+    consume: (hand: HandSample) => {
+      //godotService.sendGesture(result);
+    },
+  });
 
-  const handleRightHand = (hand: HandSample) => {
+    rightHandDetectionService.suscribeHandSequence({
+    canConsume: true,
+    consume: async (sequence: HandSample[]) => {
+      const result = await rightGestureDetectionService.detect(sequence);
+      console.log("RIGHT:", result);
 
-  };
+      //godotService.sendGesture(result);
+    },
+  });
 
-  const handleRightSequence = async (sequence: HandSample[]) => {
-    const result = await rightGestureDetectionService.detect(sequence);
-    console.log("RIGHT:", result);
-
-    //godotService.sendGesture(result);
-  };
-
-
-  const handleLeftHand = (hand: HandSample) => {
-
-  };
-
-  const handleLeftSequence = async (sequence: HandSample[]) => {
-
-  };
-
-
-  godotService.onStartDataStream(() => {
-    rightHandDetectionService.start(
-      handleRightHand,
-      handleRightSequence,
-    );
-
-    leftHandDetectionService.start(
-      handleLeftHand,
-      handleLeftSequence,
-    );
+  godotService.onStartDataStream(async () => {
+    await rightHandDetectionService.start();
+    await leftHandDetectionService.start();
   });
 
   godotService.onStopDataStream(() => {
