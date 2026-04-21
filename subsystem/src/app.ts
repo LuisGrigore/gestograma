@@ -22,13 +22,14 @@ export const startApp = async () => {
   const godotService = createGodotService(bus);
   const fpsTracker = createFpsTracker();
   const handDetectionService = createHandsDetectionService({
+	fps:18,
     //fpsTracker: fpsTracker,
     sequenceLength: 20,
   });
   const gestureDetectionService = await createGestureDetectionService({
    // leftModelUrl: "./models/right/model.json",
     modelUrl: "./models/right/model.onnx",
-    confidenceThreshold: 0.0,
+    confidenceThreshold: 0.7,
   });
   createSubsystemController({
     godotService,
