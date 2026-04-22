@@ -1,0 +1,17 @@
+export type Gesture =
+  | "NONE"
+  | "SELECT"
+  | "MOVE_LEFT"
+  | "MOVE_RIGHT"
+  | "ACCEPT"
+  | "A"
+  | "B"
+  | "C"
+  | "D"
+  | "E"
+  | "F"
+  | "G"
+  | "H"
+  | "I"
+  | "J"
+  | "K";

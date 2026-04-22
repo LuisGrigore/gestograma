@@ -3,11 +3,12 @@ import { createFpsTracker } from "./utils/debug/fps_tracker";
 import { createHandDetectionService } from "./services/hand_detection.service";
 import { createGodotService } from "./services/godot.service";
 import { createSubsystemController } from "./controllers/subsystem.controller";
-import { createGestureDetectionService } from "./services/gesture_detection.service";
+import { createGestureClassificationModel } from "./classification/gesture_classification_model";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
 import { InferenceSession } from "onnxruntime-web";
 import { createCameraService } from "./services/camera.service";
 import { createMediapipeLandmarkerService } from "./services/landmarker.service";
+import { Gesture } from "./types/gesture.type";
 
 const setupInput = (bus: GodotEventBus) => {
   document.addEventListener("keydown", (event) => {
@@ -21,30 +22,9 @@ const setupGodotEvents = (bus: GodotEventBus) => {
   });
 };
 
-interface InitParams {
-  wasmPath?: string;
-  modelPath?: string;
-  numHands?: number;
-}
 
-export const createHandLandmarker = async ({
-  wasmPath = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
-  modelPath = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-  numHands = 2,
-}: InitParams = {}): Promise<HandLandmarker> => {
-  const vision = await FilesetResolver.forVisionTasks(wasmPath);
-
-  const handLandmarker = await HandLandmarker.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: modelPath,
-      delegate: "GPU",
-    },
-    runningMode: "VIDEO",
-    numHands,
-  });
-
-  return handLandmarker;
-};
+const RIGHT_GESTURES: Gesture[] = ["A", "B", "C", "NONE"];
+const LEFT_GESTURES: Gesture[] = ["NONE"];
 
 export const startApp = async () => {
   const bus = new GodotEventBus();
@@ -68,11 +48,9 @@ export const startApp = async () => {
     landmarkerService: landmarkerService,
   });
 
-  const rightGestureDetectionService = await createGestureDetectionService({
-    handedness: "right",
-    session: await InferenceSession.create("./models/right/model.onnx", {
-      executionProviders: ["wasm"],
-    }),
+  const rightGestureDetectionService = await createGestureClassificationModel({
+    gestures: RIGHT_GESTURES,
+	onnxModelPath: "./models/right/model.onnx",
     confidenceThreshold: 0.7,
   });
 
