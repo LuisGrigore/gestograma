@@ -26,14 +26,12 @@ func move_focus(direction: FocusMovement) -> void:
 	
 	var size = _model.get_word_length()
 	_current_index = (_current_index + increment + size) % size
-	
-	_view.set_focus_at_index(_current_index)
+	_model.set_selected(_current_index)
 
 func on_enter(context := {}) -> void:
 	_current_index = context["index"]
 	_current_index = _current_index % _model.get_word_length()
-	
-	_view.set_focus_at_index(_current_index)
+	_model.set_selected(_current_index)
 	_input_gatherer.slide.connect(_on_slide)
 	_input_gatherer.accept.connect(_on_accept)
 	_input_gatherer.select.connect(_on_select)
