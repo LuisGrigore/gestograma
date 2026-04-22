@@ -35,5 +35,5 @@ func on_enter(context := {}) -> void:
 			remaining_letters[remaining_letters.find(letter)] = null
 		else:
 			_model.set_letter_state_at_index(WordRowModel.LetterState.BLANK, i)
-	_view.update()
+	#_view.update()
 	word_submitted.emit(is_valid)

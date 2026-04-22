@@ -1,6 +1,6 @@
 extends Node
 
-const DEBUG := false
+const DEBUG := true
 
 @onready var input_bus = InputBus.new()
 @onready var _web_bus: ExternalWebEventBus = null
@@ -11,7 +11,8 @@ const DEBUG := false
 func _on_start_game():
 	_scene_manager.clear_ui()
 	_scene_manager.set_world_3d_node(AlphabetLevel.init(_web_bus))
-	_web_bus.send_event("StartDataStream", null)
+	if !DEBUG:
+		_web_bus.send_event("StartDataStream", null)
 
 func _on_scene_manager_ready() -> void:
 	var menu: MainMenu = MainMenu.init()

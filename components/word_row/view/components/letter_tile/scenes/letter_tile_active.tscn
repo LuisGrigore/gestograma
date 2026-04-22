@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dr2am8l68sfp8"]
+
+[ext_resource type="Shader" uid="uid://dp42coo6ncr33" path="res://shaders/letter_tile.gdshader" id="1_bmcwy"]
+[ext_resource type="StyleBox" uid="uid://5425pjaibxcf" path="res://components/word_row/view/components/letter_tile/styles/word_grid_tile_active_style.tres" id="2_j2qin"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4yq38"]
+shader = ExtResource("1_bmcwy")
+shader_parameter/progress = 0.0
+shader_parameter/border_width = 25.0
+shader_parameter/border_color = Color(0, 1, 0, 1)
+
+[node name="Tile" type="Panel" unique_id=1641759670]
+material = SubResource("ShaderMaterial_4yq38")
+custom_minimum_size = Vector2(64, 64)
+theme_override_styles/panel = ExtResource("2_j2qin")

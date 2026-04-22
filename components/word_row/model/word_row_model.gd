@@ -8,6 +8,10 @@ var _letters:Array[String] = []
 var _letter_states:Array[LetterState] = []
 var _row_state := RowState.INNACTIVE
 
+signal letter_changed(index: int)
+signal state_changed(index: int)
+signal cleared()
+
 static func init(target_word:String) -> WordRowModel:
 	var tile_row_model = WordRowModel.new()
 	target_word = target_word.to_upper()
@@ -26,6 +30,7 @@ func set_letter_at_index(letter: String, index:int) -> void:
 		push_error("Index out of bounds for letter array.")
 		return
 	_letters[index] = letter
+	letter_changed.emit(index)
 
 func get_letter_at_index(index:int) -> String:
 	if index > _letters.size() - 1:
@@ -38,6 +43,7 @@ func set_letter_state_at_index(letter_state: LetterState, index:int) -> void:
 		push_error("Index out of bounds for letter array.")
 		return
 	_letter_states[index] = letter_state
+	state_changed.emit(index)
 
 func get_letter_state_at_index(index:int) -> LetterState:
 	if index > _letter_states.size() - 1:
@@ -59,8 +65,10 @@ func set_row_state(state: RowState) -> void:
 
 func clear () -> void:
 	for i in get_word_length():
-		set_letter_at_index("",i)
-		set_letter_state_at_index(LetterState.BLANK, i)
+		_letters[i] = ""
+		_letter_states[i] = LetterState.BLANK
+	cleared.emit()
+
 
 func is_complete() -> bool:
 	for letter in _letters:

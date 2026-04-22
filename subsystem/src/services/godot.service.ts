@@ -23,12 +23,12 @@ export const createGodotService = (bus: GodotEventBus): GodotService => {
     bus.sendEventToGodot("HandData", handData);
   };
   const sendGesture = (gesture: Gesture) => {
-	if (gesture == "NONE") return;
-	if (lastGesture == "NONE" || lastGesture != gesture)
-	{
-		lastGesture = gesture
+	// if (gesture == "NONE") return;
+	// if (lastGesture == "NONE" || lastGesture != gesture)
+	// {
+	// 	lastGesture = gesture
 		bus.sendEventToGodot("Gesture", gesture);
-	}
+	// }
   };
 
   return {

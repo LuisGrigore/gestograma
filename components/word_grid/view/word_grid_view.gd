@@ -12,10 +12,10 @@ static func init(model:WordGridModel) -> WordGridView:
 	word_grid_view.init_instance(model)
 	return word_grid_view
 
-func init_instance(model:WordGridModel) -> void:
+func init_instance(model:WordGridModel, timer:Timer) -> void:
 	_model = model
 	for word_row_model in _model.get_word_row_models():
-		var word_row_view = WordRowView.init(word_row_model)
+		var word_row_view = WordRowView.init(word_row_model,timer)
 		_word_row_views.append(word_row_view)
 		_container.add_child(word_row_view)
 

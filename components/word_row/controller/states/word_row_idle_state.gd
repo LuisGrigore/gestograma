@@ -15,4 +15,4 @@ func on_enter(context := {}) -> void:
 	if _model.get_row_state() == WordRowModel.RowState.VALIDATED:
 		change_state_request.emit("WordRowLockState")
 	_model.clear()
-	_view.update()
+	#_view.update()

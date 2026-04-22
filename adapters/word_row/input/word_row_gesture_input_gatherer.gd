@@ -9,7 +9,7 @@ static func init(web_bus:ExternalWebEventBus) -> WordRowGestureInputGatherer:
 	
 func init_instance(web_bus:ExternalWebEventBus) -> void:
 	_web_bus = web_bus
-	_web_bus.on_event("input", _on_input)
+	_web_bus.on_event("Gesture", _on_input)
 
 func _on_input(input: String) -> void:
 	# SLIDE LEFT
