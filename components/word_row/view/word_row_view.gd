@@ -24,6 +24,13 @@ func update() -> void:
 	for i in _model.get_word_length():
 		_tiles[i].set_letter(_model.get_letter_at_index(i))
 		_tiles[i].set_highlight(false)
+		match _model.get_letter_state_at_index(i):
+			WordRowModel.LetterState.HIT:
+				_tiles[i].set_background(Tile.Bg.GREEN)
+			WordRowModel.LetterState.CONTAINED:
+				_tiles[i].set_background(Tile.Bg.YELLOW)
+			WordRowModel.LetterState.BLANK:
+				_tiles[i].set_background(Tile.Bg.GREY)
 	if _model.get_selected() >= 0:
 		_tiles[_model.get_selected()].set_highlight(true)
 	

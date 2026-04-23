@@ -13,11 +13,10 @@ static func get_instance(model: WordRowModel, view: WordRowView) -> WordRowLockS
 	return new_state
 
 func on_enter(context := {}) -> void:
+	_model.set_selected(-1)
 	var is_valid = true
 	var target_word = _model.get_target_word()
-	
 	var remaining_letters: Array = target_word.split("")
-	
 	for i in _model.get_word_length():
 		if target_word[i] == _model.get_letter_at_index(i):
 			_model.set_letter_state_at_index(WordRowModel.LetterState.HIT, i)
