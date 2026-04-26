@@ -4,8 +4,6 @@ import { createHandDetectionService } from "./services/hand_detection.service";
 import { createGodotService } from "./services/godot.service";
 import { createSubsystemController } from "./controllers/subsystem.controller";
 import { createGestureClassificationModel } from "./classification/gesture_classification_model";
-import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
-import { InferenceSession } from "onnxruntime-web";
 import { createCameraService } from "./services/camera.service";
 import { createMediapipeLandmarkerService } from "./services/landmarker.service";
 import { Gesture } from "./types/gesture.type";
@@ -23,8 +21,36 @@ const setupGodotEvents = (bus: GodotEventBus) => {
 };
 
 
-const RIGHT_GESTURES: Gesture[] = ["A", "B", "C", "NONE"];
-const LEFT_GESTURES: Gesture[] = ["NONE"];
+const RIGHT_GESTURES: Gesture[] = [
+			// "NONE",
+			"A",
+			"B",
+			"C",
+			"D",
+			"E",
+			"F",
+			"G",
+			"H",
+			"I",
+			"J",
+			"K",
+			"L",
+			"M",
+			"N",
+			"O",
+			"P",
+			"Q",
+			"R",
+			"S",
+			"T",
+			"U",
+			"V",
+			"W",
+			"X",
+			"Y",
+			"Z",
+		];
+const LEFT_GESTURES: Gesture[] = ["A"];
 
 export const startApp = async () => {
   const bus = new GodotEventBus();
@@ -51,7 +77,7 @@ export const startApp = async () => {
   const rightGestureDetectionService = await createGestureClassificationModel({
     gestures: RIGHT_GESTURES,
 	onnxModelPath: "./models/right/model.onnx",
-    confidenceThreshold: 0.7,
+    confidenceThreshold: 0.8,
   });
 
   createSubsystemController({
