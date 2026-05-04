@@ -10,6 +10,7 @@ export const createSubsystemController = (options: {
   rightHandDetectionService: HandDetectionService;
   leftHandDetectionService: HandDetectionService;
   rightGestureDetectionService: GestureClassificationModel;
+  leftGestureDetectionService: GestureClassificationModel;
   cameraService: CameraService;
   landmarkerService: LandmarkerService;
 }) => {
@@ -18,6 +19,7 @@ export const createSubsystemController = (options: {
     rightHandDetectionService,
     leftHandDetectionService,
     rightGestureDetectionService,
+    leftGestureDetectionService,
     cameraService,
     landmarkerService,
   } = options;
@@ -35,6 +37,17 @@ export const createSubsystemController = (options: {
       const result = await rightGestureDetectionService.classify(sequence);
       if (result) {
         console.log("RIGHT:", result.class);
+        godotService.sendGesture(result.class);
+      }
+    },
+  });
+
+  leftHandDetectionService.suscribeHandSequence({
+    canConsume: true,
+    consume: async (sequence: HandSample[]) => {
+      const result = await leftGestureDetectionService.classify(sequence);
+      if (result) {
+        console.log("LEFT:", result.class);
         godotService.sendGesture(result.class);
       }
     },

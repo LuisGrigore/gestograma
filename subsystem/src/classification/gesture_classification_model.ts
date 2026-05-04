@@ -5,7 +5,7 @@ import {
   queueStrategy,
   withStrategy,
 } from "../classificator/classification_strategies";
-import { ClassificationModel } from "../classificator/classification_models";
+import { ClassificationModel, ClassificationModelResult } from "../classificator/classification_models";
 import { Gesture } from "../types/gesture.type";
 
 const extractFeatures = (sequence: HandSample[]) => {
@@ -55,7 +55,10 @@ const extractFeatures = (sequence: HandSample[]) => {
   return frames;
 };
 
-export type GestureClassificationModel = ClassificationModel<HandSample[], Gesture>
+export type GestureClassificationModel = ClassificationModel<
+  HandSample[],
+  Gesture
+>;
 
 interface Params {
   gestures: Gesture[];
@@ -63,51 +66,57 @@ interface Params {
   confidenceThreshold: number;
 }
 
+type Task = () => Promise<void>;
+
+let queue: Promise<void> = Promise.resolve();
+
 export const createGestureClassificationModel = async ({
   gestures,
   onnxModelPath,
   confidenceThreshold,
 }: Params): Promise<GestureClassificationModel> => {
   const session = await InferenceSession.create(onnxModelPath, {
-    executionProviders: ["wasm"],
+    executionProviders: ["webgl", "webgpu", "wasm"],
   });
   const inputName = session.inputNames[0];
   const outputName = session.outputNames[0];
+
+  const enqueueOnnxTask = (task: Task): Promise<void> => {
+    const next = queue.then(() => task());
+    queue = next.catch(() => {});
+    return next;
+  };
+
   const model = withStrategy(
     {
       classify: async (seq: HandSample[]) => {
         if (!seq.length) return null;
-
         const features = extractFeatures(seq);
-
         const tensor = new Tensor(
           "float32",
           Float32Array.from(features.flat()),
           [1, features.length, features[0].length],
         );
 
-        const out = await session.run({ [inputName]: tensor });
+        let result: { class: Gesture; confidence: number } | null = null;
 
-        const data = out[outputName].data as Float32Array;
-
-        let maxIdx = 0;
-        let maxVal = data[0];
-
-        for (let i = 1; i < data.length; i++) {
-          if (data[i] > maxVal) {
-            maxVal = data[i];
-            maxIdx = i;
+        await enqueueOnnxTask(async () => {
+          const out = await session.run({ [inputName]: tensor });
+          const data = out[outputName].data as Float32Array;
+          let maxIdx = 0;
+          let maxVal = data[0];
+          for (let i = 1; i < data.length; i++) {
+            if (data[i] > maxVal) {
+              maxVal = data[i];
+              maxIdx = i;
+            }
           }
-        }
+          if (maxVal < confidenceThreshold) return;
+          if (maxIdx < 0 || maxIdx > gestures.length - 1) return;
+          result = { class: gestures[maxIdx], confidence: maxVal };
+        });
 
-        if (maxVal < confidenceThreshold) return null;
-
-		if (maxIdx < 0 || maxIdx > gestures.length - 1) return null;
-		
-        return {
-          class: gestures[maxIdx],
-          confidence: maxVal,
-        };
+        return result as ClassificationModelResult<Gesture>;
       },
       destroy: () => session.release(),
     },

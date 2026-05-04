@@ -29,4 +29,10 @@ export type Gesture =
   | "W"
   | "X"
   | "Y"
-  | "Z";
+  | "Z"
+  | "ACTIVATE"
+  | "SHIFT_LEFT"
+  | "SHIFT_RIGHT"
+  | "ENTER"
+  | "DELETE"
+  | "CANCEL";

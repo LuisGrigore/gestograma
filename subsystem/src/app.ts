@@ -20,37 +20,43 @@ const setupGodotEvents = (bus: GodotEventBus) => {
   });
 };
 
-
 const RIGHT_GESTURES: Gesture[] = [
-			// "NONE",
-			"A",
-			"B",
-			"C",
-			"D",
-			"E",
-			"F",
-			"G",
-			"H",
-			"I",
-			"J",
-			"K",
-			"L",
-			"M",
-			"N",
-			"O",
-			"P",
-			"Q",
-			"R",
-			"S",
-			"T",
-			"U",
-			"V",
-			"W",
-			"X",
-			"Y",
-			"Z",
-		];
-const LEFT_GESTURES: Gesture[] = ["A"];
+  // "NONE",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+const LEFT_GESTURES: Gesture[] = [
+  "ACTIVATE",
+  "SHIFT_LEFT",
+  "SHIFT_RIGHT",
+  "ENTER",
+  "DELETE",
+  "CANCEL",
+];
 
 export const startApp = async () => {
   const bus = new GodotEventBus();
@@ -76,7 +82,13 @@ export const startApp = async () => {
 
   const rightGestureDetectionService = await createGestureClassificationModel({
     gestures: RIGHT_GESTURES,
-	onnxModelPath: "./models/right/model.onnx",
+    onnxModelPath: "./models/right/model.onnx",
+    confidenceThreshold: 0.8,
+  });
+
+const leftGestureDetectionService = await createGestureClassificationModel({
+    gestures: LEFT_GESTURES,
+    onnxModelPath: "./models/left/model.onnx",
     confidenceThreshold: 0.8,
   });
 
@@ -85,6 +97,7 @@ export const startApp = async () => {
     rightHandDetectionService,
     leftHandDetectionService,
     rightGestureDetectionService,
+    leftGestureDetectionService,
     cameraService,
     landmarkerService,
   });

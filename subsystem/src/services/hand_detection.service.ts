@@ -66,6 +66,7 @@ export const createHandDetectionService = ({
 
   const start = async () => {
     if (running) return;
+	running = true;
     unsuscribe = landmarkerService.subscribe({
       canConsume: true,
       consume: (dualHandSample: DualHandSample) => {
