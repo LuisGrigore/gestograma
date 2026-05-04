@@ -13,19 +13,19 @@ func init_instance(web_bus:ExternalWebEventBus) -> void:
 
 func _on_input(input: String) -> void:
 	# SLIDE LEFT
-	if input == "ArrowLeft":
+	if input == "SHIFT_LEFT":
 		slide.emit(InputBus.SlideDirection.LEFT)
 
 	# SLIDE RIGHT
-	elif input == "ArrowRight":
+	elif input == "SHIFT_RIGHT":
 		slide.emit(InputBus.SlideDirection.RIGHT)
 
 	# SELECT
-	elif input == " ":
+	elif input == "ACTIVATE":
 		select.emit()
 
 	# ACCEPT
-	elif input == "Enter":
+	elif input == "ENTER":
 		accept.emit()
 
 	# LETRAS
